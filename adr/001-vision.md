@@ -35,6 +35,9 @@ Build **workspace-tui**: a terminal user interface for workspace management with
 - Scriptable workflows (e.g., "show today's meetings + unread emails")
 - AI-assisted planning and task management
 - Remote access without VPN/desktop forwarding
+- **Local backup + control** — throttled sync, keep cloud lean, store large files locally
+- **Cleanup automation** — archive spam, status updates, old emails locally
+- **Offline-first** — work without internet, sync when connected
 
 **For AI integration:**
 - Read: "What's on my calendar today?"
@@ -64,6 +67,9 @@ Build **workspace-tui**: a terminal user interface for workspace management with
 - [ ] TUI with keyboard navigation
 - [ ] CLI mode for scripting
 - [ ] Works over SSH
+- [ ] Local backup with throttled sync
+- [ ] Cloud cleanup: archive spam/status updates locally, keep cloud lean
+- [ ] Large file offload: move attachments to local storage
 
 ## Alternatives considered
 
