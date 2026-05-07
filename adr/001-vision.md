@@ -38,6 +38,8 @@ Build **workspace-tui**: a terminal user interface for workspace management with
 - **Local backup + control** — throttled sync, keep cloud lean, store large files locally
 - **Cleanup automation** — archive spam, status updates, old emails locally
 - **Offline-first** — work without internet, sync when connected
+- **Provider migration** — move from Gmail to Proton without losing your workflow
+- **Vendor lock-in free** — your data, your rules, your provider
 
 **For AI integration:**
 - Read: "What's on my calendar today?"
