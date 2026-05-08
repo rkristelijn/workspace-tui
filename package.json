@@ -1,0 +1,48 @@
+{
+  "name": "workspace-tui",
+  "version": "0.1.0",
+  "type": "module",
+  "packageManager": "pnpm@10.11.0",
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "postinstall": "bash scripts/setup.sh",
+    "start": "tsx --tsconfig .config/tsconfig.json src/index.ts",
+    "dev": "tsx --tsconfig .config/tsconfig.json src/index.ts",
+    "cli": "tsx --tsconfig .config/tsconfig.json src/cli.ts",
+    "test": "vitest",
+    "test:e2e": "cucumber-js",
+    "lint": "biome check .",
+    "format": "biome format --write .",
+    "fix": "biome check --write .",
+    "check": "pnpm format && biome check . && tsc -p .config/tsconfig.json --noEmit && vitest run"
+  },
+  "dependencies": {
+    "blessed": "^0.1.81",
+    "dotenv": "16.5.0",
+    "google-auth-library": "9.15.1",
+    "googleapis": "148.0.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.14",
+    "@types/blessed": "^0.1.27",
+    "@types/node": "24.0.3",
+    "@vitest/coverage-v8": "^4.1.5",
+    "tsx": "4.21.0",
+    "typescript": "5.8.3",
+    "vitest": "4.1.5"
+  },
+  "engines": {
+    "node": ">=24.0.0",
+    "pnpm": ">=10.0.0"
+  },
+  "tools": {
+    "required": {
+      "gitleaks": "8.18.0",
+      "cloc": "1.90.0"
+    },
+    "optional": {
+      "shellcheck": "0.9.0",
+      "ripgrep": "13.0.0"
+    }
+  }
+}

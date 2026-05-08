@@ -1,0 +1,24 @@
+# Passive voice patterns to detect in ADRs
+will be
+can be
+should be
+must be
+may be
+could be
+would be
+is used
+are used
+was used
+were used
+is done
+are done
+is made
+are made
+is chosen
+are chosen
+is stored
+are stored
+is implemented
+are implemented
+is applied
+are applied
