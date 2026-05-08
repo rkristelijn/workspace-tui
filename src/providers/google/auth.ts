@@ -1,6 +1,5 @@
 import * as http from 'node:http';
 import * as url from 'node:url';
-import type { OAuth2Client } from 'google-auth-library';
 import { google } from 'googleapis';
 
 type Credentials = {

@@ -41,7 +41,7 @@ type Provider = {
 - Providers only implement what they support
 - Easy to add new capabilities without breaking existing providers
 - Clear separation of concerns
-- Future CRUD operations can be added per interface
+- Add future CRUD operations per interface
 
 ## Examples
 

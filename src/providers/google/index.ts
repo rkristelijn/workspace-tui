@@ -50,7 +50,7 @@ class GoogleCalendar implements CalendarProvider {
       title: event.summary || '',
       start: new Date(event.start?.dateTime || event.start?.date || ''),
       end: new Date(event.end?.dateTime || event.end?.date || ''),
-      location: event.location,
+      location: event.location ?? undefined,
       attendees: event.attendees?.map((a) => a.email || ''),
       provider: 'google',
     }));
@@ -80,7 +80,7 @@ class GoogleEmail implements EmailProvider {
           to: [headers.find((h) => h.name === 'To')?.value || ''],
           subject: headers.find((h) => h.name === 'Subject')?.value || '',
           body: detail.data.snippet || '',
-          date: new Date(Number.parseInt(detail.data.internalDate || '0')),
+          date: new Date(Number.parseInt(detail.data.internalDate || '0', 10)),
           read: !detail.data.labelIds?.includes('UNREAD'),
           provider: 'google',
         };

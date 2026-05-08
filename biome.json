@@ -1,8 +1,6 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.7.3/schema.json",
-  "organizeImports": {
-    "enabled": true
-  },
+  "$schema": "https://biomejs.dev/schemas/2.4.14/schema.json",
+  "root": true,
   "linter": {
     "enabled": true,
     "rules": {
@@ -10,7 +8,6 @@
       "style": {
         "useConsistentArrayType": "error",
         "noNonNullAssertion": "warn",
-        "noVar": "error",
         "useConst": "error",
         "useTemplate": "error"
       },

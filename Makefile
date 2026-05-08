@@ -10,7 +10,8 @@ install: hooks ## Install dependencies and git hooks
 
 hooks: ## Install git hooks
 	@mkdir -p .git/hooks
-	@ln -sf ../../.config/pre-commit .git/hooks/pre-commit
+	@cp scripts/git/pre-commit.sh .git/hooks/pre-commit
+	@chmod +x .git/hooks/pre-commit
 	@echo "Git hooks installed"
 
 dev: ## Run development server
