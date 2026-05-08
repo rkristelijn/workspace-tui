@@ -45,27 +45,36 @@ fi
 # === QUALITY ===
 print_section "Quality"
 
-elapsed=$(run_step "bash .config/check-filesize.sh 2>&1")
-if [[ $? -eq 0 ]]; then
-  print_step "03/15" "filesize" "success" "${elapsed}s"
+STEP_START=$(date +%s)
+bash .config/check-filesize.sh 2>&1
+FILESIZE_EXIT=$?
+STEP_END=$(date +%s)
+if [[ $FILESIZE_EXIT -eq 0 ]]; then
+  print_step "03/15" "filesize" "success" "$((STEP_END - STEP_START))s"
 else
   print_step "03/15" "filesize" "error"
   bash .config/check-filesize.sh
   exit 1
 fi
 
-elapsed=$(run_step "bash .config/check-complexity.sh 2>&1")
-if [[ $? -eq 0 ]]; then
-  print_step "04/15" "complexity" "success" "${elapsed}s"
+STEP_START=$(date +%s)
+bash .config/check-complexity.sh 2>&1
+COMPLEXITY_EXIT=$?
+STEP_END=$(date +%s)
+if [[ $COMPLEXITY_EXIT -eq 0 ]]; then
+  print_step "04/15" "complexity" "success" "$((STEP_END - STEP_START))s"
 else
   print_step "04/15" "complexity" "error"
   bash .config/check-complexity.sh
   exit 1
 fi
 
-elapsed=$(run_step "bash .config/check-comments.sh 2>&1")
-if [[ $? -eq 0 ]]; then
-  print_step "05/15" "comments" "success" "${elapsed}s"
+STEP_START=$(date +%s)
+bash .config/check-comments.sh 2>&1
+COMMENTS_EXIT=$?
+STEP_END=$(date +%s)
+if [[ $COMMENTS_EXIT -eq 0 ]]; then
+  print_step "05/15" "comments" "success" "$((STEP_END - STEP_START))s"
 else
   print_step "05/15" "comments" "error"
   bash .config/check-comments.sh
