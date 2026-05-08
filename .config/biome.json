@@ -9,7 +9,10 @@
       "recommended": true,
       "style": {
         "useConsistentArrayType": "error",
-        "noNonNullAssertion": "warn"
+        "noNonNullAssertion": "warn",
+        "noVar": "error",
+        "useConst": "error",
+        "useTemplate": "error"
       },
       "suspicious": {
         "noExplicitAny": "warn"
@@ -25,7 +28,8 @@
   "javascript": {
     "formatter": {
       "quoteStyle": "single",
-      "trailingCommas": "es5"
+      "trailingCommas": "es5",
+      "arrowParentheses": "always"
     }
   }
 }

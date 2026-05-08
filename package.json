@@ -5,6 +5,7 @@
   "packageManager": "pnpm@9.0.0",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
+    "postinstall": "bash scripts/setup.sh",
     "dev": "tsx --tsconfig .config/tsconfig.json src/index.ts",
     "test": "vitest",
     "test:e2e": "cucumber-js",
@@ -13,13 +14,23 @@
     "check": "biome check --config-path .config . && tsc -p .config/tsconfig.json --noEmit && vitest run"
   },
   "dependencies": {
-    "googleapis": "^144.0.0"
+    "googleapis": "144.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.7.3",
-    "@types/node": "^20.12.7",
-    "typescript": "^5.4.5",
-    "tsx": "^4.7.2",
-    "vitest": "^1.6.0"
+    "@biomejs/biome": "1.7.3",
+    "@types/node": "20.12.7",
+    "typescript": "5.4.5",
+    "tsx": "4.7.2",
+    "vitest": "1.6.0"
+  },
+  "tools": {
+    "required": {
+      "gitleaks": "8.18.0",
+      "cloc": "1.90.0"
+    },
+    "optional": {
+      "shellcheck": "0.9.0",
+      "ripgrep": "13.0.0"
+    }
   }
 }

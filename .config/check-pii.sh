@@ -22,12 +22,12 @@ fi
 FOUND=0
 for pattern in "${PATTERNS[@]}"; do
   if bash "$SEARCH" "$pattern" | grep -v "check-pii.sh"; then
-    echo "ERROR: Found PII pattern: $pattern"
+    print_error " Found PII pattern: $pattern"
     FOUND=1
   fi
 done
 
 if [[ $FOUND -eq 1 ]]; then
-  echo "Remove sensitive data and use placeholders"
+  printf "%s\n" "Remove sensitive data and use placeholders"
   exit 1
 fi

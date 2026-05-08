@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # UI utilities for consistent terminal output
 
+# Get terminal dimensions
+TERM_WIDTH=$(tput cols 2>/dev/null || echo 80)
+TERM_HEIGHT=$(tput lines 2>/dev/null || echo 24)
+
 # Detect terminal background (dark/light)
 # Returns: "dark" or "light"
 detect_theme() {
@@ -46,10 +50,21 @@ CHECK="✓"
 CROSS="✗"
 SKIP="⊘"
 
+# Wrap text to terminal width with indent
+# Usage: wrap_text "long text..." 2
+wrap_text() {
+  local text="$1"
+  local indent="${2:-0}"
+  local width=$((TERM_WIDTH - indent))
+  local spaces=$(printf "%${indent}s" "")
+  
+  echo "$text" | fold -s -w "$width" | while IFS= read -r line; do
+    echo "${spaces}${line}"
+  done
+}
+
 # Print step with timing
 # Usage: print_step "1/5" "biome" "success" "2s"
-# Usage: print_step "1/5" "biome" "error"
-# Usage: print_step "1/5" "biome" "skip" "not installed"
 print_step() {
   local num="$1"
   local name="$2"
@@ -82,15 +97,38 @@ print_section() {
 }
 
 # Print error message
-# Usage: print_error "Branch name invalid"
+# Usage: print_error "Branch name invalid" [indent]
 print_error() {
-  echo -e "${RED}ERROR:${RESET} $1"
+  local msg="$1"
+  local indent="${2:-0}"
+  local spaces=$(printf "%${indent}s" "")
+  echo -e "${spaces}${RED}ERROR:${RESET} ${msg}"
 }
 
 # Print warning message
-# Usage: print_warning "Passive voice detected"
+# Usage: print_warning "Passive voice detected" [indent]
 print_warning() {
-  echo -e "${YELLOW}WARNING:${RESET} $1"
+  local msg="$1"
+  local indent="${2:-0}"
+  local spaces=$(printf "%${indent}s" "")
+  echo -e "${spaces}${YELLOW}WARNING:${RESET} ${msg}"
+}
+
+# Print info message with wrapping
+# Usage: print_info "Fix: use async/await" [indent]
+print_info() {
+  local msg="$1"
+  local indent="${2:-0}"
+  wrap_text "$msg" "$indent"
+}
+
+# Print line
+# Usage: print_line "Testing..." [indent]
+print_line() {
+  local msg="$1"
+  local indent="${2:-0}"
+  local spaces=$(printf "%${indent}s" "")
+  echo "${spaces}${msg}"
 }
 
 # Print summary
@@ -98,14 +136,4 @@ print_warning() {
 print_summary() {
   echo ""
   echo -e "${GREEN}All checks passed${RESET} in ${GRAY}$1${RESET}"
-}
-
-# Run step with timing
-# Usage: run_step "command to run"
-# Returns: elapsed time in seconds
-run_step() {
-  local start=$(date +%s)
-  eval "$1"
-  local end=$(date +%s)
-  echo $((end - start))
 }

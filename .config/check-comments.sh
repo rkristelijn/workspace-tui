@@ -7,12 +7,12 @@ THRESHOLD=20
 
 # Check if cloc is installed
 if ! command -v cloc > /dev/null 2>&1; then
-  echo "cloc not installed (optional)" >&2
+  printf "%s\n" "cloc not installed (optional)" >&2
   exit 0
 fi
 
 # Get totals from cloc
-totals=$(cloc src/ --exclude-dir=test --not-match-f='(\.test|\.spec)\.ts$' --csv --quiet 2>/dev/null | grep SUM || echo "")
+totals=$(cloc src/ --exclude-dir=test --not-match-f='(\.test|\.spec)\.ts$' --csv --quiet 2>/dev/null | grep SUM || printf "\n")
 
 if [[ -z "$totals" ]]; then
   exit 0
@@ -29,9 +29,9 @@ fi
 ratio=$((comments * 100 / total))
 
 if [[ "$ratio" -lt "$THRESHOLD" ]]; then
-  echo "Comment ratio: ${ratio}% (minimum: ${THRESHOLD}%)" >&2
-  echo "" >&2
-  echo "Per-file breakdown:" >&2
+  printf "%s\n" "Comment ratio: ${ratio}% (minimum: ${THRESHOLD}%)" >&2
+  printf "\n" >&2
+  printf "%s\n" "Per-file breakdown:" >&2
   cloc src/ --exclude-dir=test --not-match-f='(\.test|\.spec)\.ts$' --by-file --csv --quiet 2>/dev/null |
     grep -v "^$\|^language\|SUM" |
     while IFS=',' read -r _ file _ fc fcode _; do

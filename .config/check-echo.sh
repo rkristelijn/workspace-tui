@@ -1,18 +1,20 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Check for direct echo usage in logic scripts (except ui.sh)
+source .config/ui.sh
+
+# Check for direct echo/printf usage (except ui.sh and autofix)
 FOUND=0
 
 for script in .config/*.sh; do
-  # Skip ui.sh and this check script
   [[ "$script" == ".config/ui.sh" ]] && continue
   [[ "$script" == ".config/check-echo.sh" ]] && continue
+  [[ "$script" == ".config/autofix-echo.sh" ]] && continue
   
-  # Check for echo statements
-  if grep -n "echo " "$script" 2>/dev/null; then
-    echo "ERROR: Found 'echo' in $script"
-    echo "  Use ui.sh functions instead (print_step, print_error, etc.)"
+  # Check for echo/printf (exclude command substitution)
+  if grep -n "echo \|printf " "$script" 2>/dev/null | grep -v '\$(echo\|printf'; then
+    print_error "Found output in $script"
+    print_info "Use ui.sh: print_error, print_warning, print_line, print_info" 2
     FOUND=1
   fi
 done
@@ -20,3 +22,4 @@ done
 if [[ $FOUND -eq 1 ]]; then
   exit 1
 fi
+

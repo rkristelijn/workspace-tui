@@ -13,7 +13,7 @@ if [[ -f "$DUTCH_WORDS" ]]; then
     [[ -z "$word" ]] && continue
     
     if bash "$SEARCH" "\\b${word}\\b" | grep -v "check-language.sh"; then
-      echo "ERROR: Found Dutch word: ${word}"
+      print_error " Found Dutch word: ${word}"
       FOUND=1
     fi
   done < "$DUTCH_WORDS"
@@ -26,8 +26,8 @@ if [[ -f "$PASSIVE_VOICE" ]]; then
     [[ -z "$pattern" ]] && continue
     
     if bash "$SEARCH" "${pattern}" docs/adr/ | grep -v "check-language.sh"; then
-      echo "WARNING: Passive voice in ADR: '${pattern}'"
-      echo "  Use active/declarative: 'Use X' instead of 'X is used'"
+      print_warning " Passive voice in ADR: '${pattern}'"
+      printf "%s\n" "  Use active/declarative: 'Use X' instead of 'X is used'"
       FOUND=1
     fi
   done < "$PASSIVE_VOICE"

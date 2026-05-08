@@ -27,8 +27,8 @@ done < <(find src -name '*.ts' -o -name '*.js')
 
 if [[ $FOUND -eq 1 ]]; then
   for violation in "${VIOLATIONS[@]}"; do
-    echo "$violation" >&2
-    echo "  Use ui.sh functions instead" >&2
+    printf "%s\n" "$violation" >&2
+    printf "%s\n" "  Use ui.sh functions instead" >&2
   done
   exit 1
 fi

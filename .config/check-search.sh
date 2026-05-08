@@ -23,8 +23,8 @@ done < <(find .config -name '*.sh')
 
 if [[ $FOUND -eq 1 ]]; then
   for violation in "${VIOLATIONS[@]}"; do
-    echo "$violation" >&2
-    echo "  Use: bash .config/search.sh 'pattern' [paths]" >&2
+    printf "%s\n" "$violation" >&2
+    printf "%s\n" "  Use: bash .config/search.sh 'pattern' [paths]" >&2
   done
   exit 1
 fi

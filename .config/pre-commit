@@ -24,21 +24,27 @@ fi
 # === FORMATTING ===
 print_section "Formatting"
 
-elapsed=$(run_step "pnpm lint --write > /dev/null 2>&1")
-if [[ $? -eq 0 ]]; then
-  print_step "01/15" "biome" "success" "${elapsed}s"
+STEP_START=$(date +%s)
+pnpm lint --write > /dev/null 2>&1
+BIOME_EXIT=$?
+STEP_END=$(date +%s)
+if [[ $BIOME_EXIT -eq 0 ]]; then
+  print_step "01/15" "biome" "success" "$((STEP_END - STEP_START))s"
 else
   print_step "01/15" "biome" "error"
   pnpm lint --write
   exit 1
 fi
 
-elapsed=$(run_step "pnpm exec tsc -p .config/tsconfig.json --noEmit > /dev/null 2>&1")
-if [[ $? -eq 0 ]]; then
-  print_step "02/15" "typescript" "success" "${elapsed}s"
+STEP_START=$(date +%s)
+OUTPUT=$(pnpm exec tsc -p .config/tsconfig.json --noEmit 2>&1)
+TS_EXIT=$?
+STEP_END=$(date +%s)
+if [[ $TS_EXIT -eq 0 ]]; then
+  print_step "02/15" "typescript" "success" "$((STEP_END - STEP_START))s"
 else
   print_step "02/15" "typescript" "error"
-  pnpm exec tsc -p .config/tsconfig.json --noEmit
+  echo "$OUTPUT"
   exit 1
 fi
 
@@ -84,27 +90,36 @@ fi
 # === ARCHITECTURE ===
 print_section "Architecture"
 
-elapsed=$(run_step "bash .config/check-colors.sh 2>&1")
-if [[ $? -eq 0 ]]; then
-  print_step "06/15" "colors" "success" "${elapsed}s"
+STEP_START=$(date +%s)
+bash .config/check-colors.sh 2>&1
+COLORS_EXIT=$?
+STEP_END=$(date +%s)
+if [[ $COLORS_EXIT -eq 0 ]]; then
+  print_step "06/15" "colors" "success" "$((STEP_END - STEP_START))s"
 else
   print_step "06/15" "colors" "error"
   bash .config/check-colors.sh
   exit 1
 fi
 
-elapsed=$(run_step "bash .config/check-search.sh 2>&1")
-if [[ $? -eq 0 ]]; then
-  print_step "07/15" "search" "success" "${elapsed}s"
+STEP_START=$(date +%s)
+bash .config/check-search.sh 2>&1
+SEARCH_EXIT=$?
+STEP_END=$(date +%s)
+if [[ $SEARCH_EXIT -eq 0 ]]; then
+  print_step "07/15" "search" "success" "$((STEP_END - STEP_START))s"
 else
   print_step "07/15" "search" "error"
   bash .config/check-search.sh
   exit 1
 fi
 
-elapsed=$(run_step "bash .config/check-echo.sh > /dev/null 2>&1")
-if [[ $? -eq 0 ]]; then
-  print_step "08/15" "echo" "success" "${elapsed}s"
+STEP_START=$(date +%s)
+bash .config/check-echo.sh > /dev/null 2>&1
+ECHO_EXIT=$?
+STEP_END=$(date +%s)
+if [[ $ECHO_EXIT -eq 0 ]]; then
+  print_step "08/15" "echo" "success" "$((STEP_END - STEP_START))s"
 else
   print_step "08/15" "echo" "error"
   bash .config/check-echo.sh
@@ -115,9 +130,12 @@ fi
 print_section "Security"
 
 if command -v gitleaks > /dev/null 2>&1; then
-  elapsed=$(run_step "gitleaks detect --no-git --redact > /dev/null 2>&1")
-  if [[ $? -eq 0 ]]; then
-    print_step "09/15" "gitleaks" "success" "${elapsed}s"
+  STEP_START=$(date +%s)
+  gitleaks detect --no-git --redact > /dev/null 2>&1
+  GITLEAKS_EXIT=$?
+  STEP_END=$(date +%s)
+  if [[ $GITLEAKS_EXIT -eq 0 ]]; then
+    print_step "09/15" "gitleaks" "success" "$((STEP_END - STEP_START))s"
   else
     print_step "09/15" "gitleaks" "error"
     gitleaks detect --no-git --redact
@@ -127,9 +145,12 @@ else
   print_step "09/15" "gitleaks" "skip" "not installed"
 fi
 
-elapsed=$(run_step "bash .config/check-pii.sh > /dev/null 2>&1")
-if [[ $? -eq 0 ]]; then
-  print_step "10/15" "pii" "success" "${elapsed}s"
+STEP_START=$(date +%s)
+bash .config/check-pii.sh > /dev/null 2>&1
+PII_EXIT=$?
+STEP_END=$(date +%s)
+if [[ $PII_EXIT -eq 0 ]]; then
+  print_step "10/15" "pii" "success" "$((STEP_END - STEP_START))s"
 else
   print_step "10/15" "pii" "error"
   bash .config/check-pii.sh
@@ -139,9 +160,12 @@ fi
 # === STYLE ===
 print_section "Style"
 
-elapsed=$(run_step "bash .config/check-language.sh > /dev/null 2>&1")
-if [[ $? -eq 0 ]]; then
-  print_step "11/15" "language" "success" "${elapsed}s"
+STEP_START=$(date +%s)
+bash .config/check-language.sh > /dev/null 2>&1
+LANGUAGE_EXIT=$?
+STEP_END=$(date +%s)
+if [[ $LANGUAGE_EXIT -eq 0 ]]; then
+  print_step "11/15" "language" "success" "$((STEP_END - STEP_START))s"
 else
   print_step "11/15" "language" "error"
   bash .config/check-language.sh
