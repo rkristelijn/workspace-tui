@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      blessed:
+        specifier: ^0.1.81
+        version: 0.1.81
       dotenv:
         specifier: 16.5.0
         version: 16.5.0
@@ -21,6 +24,9 @@ importers:
       '@biomejs/biome':
         specifier: 2.4.14
         version: 2.4.14
+      '@types/blessed':
+        specifier: ^0.1.27
+        version: 0.1.27
       '@types/node':
         specifier: 24.0.3
         version: 24.0.3
@@ -529,6 +535,9 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@types/blessed@0.1.27':
+    resolution: {integrity: sha512-ZOQGjLvWDclAXp0rW5iuUBXeD6Gr1PkitN7tj7/G8FCoSzTsij6OhXusOzMKhwrZ9YlL2Pmu0d6xJ9zVvk+Hsg==}
+
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
 
@@ -583,6 +592,11 @@ packages:
 
   bignumber.js@9.3.1:
     resolution: {integrity: sha512-Ko0uX15oIUS7wJ3Rb30Fs6SkVbLmPBAKdlm7q9+ak9bbIeFf0MwuBsQV6z7+X768/cHsfg+WlysDWJcmthjsjQ==}
+
+  blessed@0.1.81:
+    resolution: {integrity: sha512-LoF5gae+hlmfORcG1M5+5XZi4LBmvlXTzwJWzUlPryN/SJdSflZvROM2TwkT0GMpq7oqT48NRd4GS7BiVBc5OQ==}
+    engines: {node: '>= 0.8.0'}
+    hasBin: true
 
   buffer-equal-constant-time@1.0.1:
     resolution: {integrity: sha512-zRpUiDwd/xk6ADqPMATG8vc9VPrkck7T07OIx0gnjmJAnHnTVXNQG3vfvWNuiZIkwu9KrKdA1iJKfsfTVxE6NA==}
@@ -1244,6 +1258,10 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.60.3':
     optional: true
 
+  '@types/blessed@0.1.27':
+    dependencies:
+      '@types/node': 24.0.3
+
   '@types/estree@1.0.8': {}
 
   '@types/estree@1.0.9': {}
@@ -1303,6 +1321,8 @@ snapshots:
   base64-js@1.5.1: {}
 
   bignumber.js@9.3.1: {}
+
+  blessed@0.1.81: {}
 
   buffer-equal-constant-time@1.0.1: {}
 

@@ -2,59 +2,49 @@
 
 Terminal User Interface for workspace management — Google, Microsoft, Proton, Apple.
 
-## Status
+## What
 
-Early development - MVP focus: read-only Calendar, Email, Tasks from Google Workspace.
+CLI tool to read your calendar, email, and tasks from the terminal. Works over SSH.
 
-## What it does
-
-- **Read** — calendar, email, tasks in your terminal
-- **Plan** — day/week/month/year with Covey-style workflows
-- **Write** — draft emails and tasks with AI assistance
-- **Manage** — tasks across providers from one interface
-- **Remote-friendly** — works over SSH, no GUI required
-
-## Providers
-
-| Provider | Calendar | Email | Tasks | Status |
-|----------|----------|-------|-------|--------|
-| Google Workspace | WIP | WIP | WIP | MVP |
-| Microsoft 365 | - | - | - | Planned |
-| Proton | - | - | - | Future |
-| Apple iCloud | - | - | - | Future |
-
-## Quick Start
+## Install
 
 ```bash
 make install
-make dev
 ```
 
-## Documentation
-
-- [ADR-001: Vision](docs/adr/001-vision.md)
-- [ADR-002: BDD + TDD](docs/adr/002-bdd-tdd.md)
-- [ADR-003: Quality-Driven Development](docs/adr/003-quality-driven-development.md)
-- [ADR-004: Clean Root Config](docs/adr/004-clean-root-config.md)
-- [ADR-005: Interface Segregation](docs/adr/005-interface-segregation.md)
-- [ADR-006: EditorConfig + Biome](docs/adr/006-editorconfig-biome.md)
-- [General TUI Design](docs/general-tui-design.md)
-- [Target Architecture](docs/target-architecture.md)
-
-## Development
+## Use
 
 ```bash
-pnpm install      # install dependencies
-pnpm dev          # start TUI
-pnpm test         # unit + integration tests
-pnpm test:e2e     # BDD/Cucumber tests
-pnpm check        # all quality gates
+pnpm cli <command> [options]
+
+Commands:
+  calendars   List all calendars
+  calendar    List calendar events
+  emails      List emails
+  tasks       List tasks
+  lists       List task lists
+
+Options:
+  --mode ai|human       Output format
+  --limit N             Max items
+  --calendar-ids IDS    Filter by calendar
+  --search TEXT         Search query
+  --help                Show help
 ```
 
-Or use Makefile shortcuts:
+## Examples
 
 ```bash
-make install
-make dev
-make check
+pnpm cli calendar --mode=human          # Agenda aankomende week
+pnpm cli calendars                      # Alle agenda's
+pnpm cli emails --has-attachment        # Emails met bijlagen
+pnpm cli tasks --list-ids="Jady"        # Taken van Jady
+pnpm cli lists                          # Alle takenlijsten
 ```
+
+## Docs
+
+- [CLI Usage](docs/cli-usage.md) — Complete CLI reference
+- [AI Integration](docs/ai-integration.md) — How AI agents use this tool
+- [Architecture](docs/target-architecture.md) — System design
+- [ADRs](docs/adr/) — Architectural decisions

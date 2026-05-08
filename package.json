@@ -8,19 +8,23 @@
     "postinstall": "bash scripts/setup.sh",
     "start": "tsx --tsconfig .config/tsconfig.json src/index.ts",
     "dev": "tsx --tsconfig .config/tsconfig.json src/index.ts",
+    "cli": "tsx --tsconfig .config/tsconfig.json src/cli.ts",
     "test": "vitest",
     "test:e2e": "cucumber-js",
     "lint": "biome check .",
     "format": "biome format --write .",
-    "check": "biome check . && tsc -p .config/tsconfig.json --noEmit && vitest run"
+    "fix": "biome check --write .",
+    "check": "pnpm format && biome check . && tsc -p .config/tsconfig.json --noEmit"
   },
   "dependencies": {
+    "blessed": "^0.1.81",
     "dotenv": "16.5.0",
     "google-auth-library": "9.15.1",
     "googleapis": "148.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.14",
+    "@types/blessed": "^0.1.27",
     "@types/node": "24.0.3",
     "tsx": "4.21.0",
     "typescript": "5.8.3",

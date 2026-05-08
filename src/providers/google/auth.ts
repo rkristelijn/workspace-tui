@@ -1,4 +1,4 @@
-import * as http from 'node:http';
+import { createServer } from 'node:http';
 import { google } from 'googleapis';
 
 type Credentials = {
@@ -39,10 +39,17 @@ export async function authenticate(clientId: string, clientSecret: string): Prom
 
 function getAuthCode(): Promise<string> {
   return new Promise((resolve, reject) => {
-    const server = http.createServer((req, res) => {
+    const server = createServer((req, res) => {
       if (req.url?.startsWith('/oauth2callback')) {
         const url = new URL(req.url, 'http://localhost:3000');
         const code = url.searchParams.get('code');
+        if (!code) {
+          res.writeHead(400);
+          res.end('Missing auth code');
+          server.close();
+          reject(new Error('Missing auth code'));
+          return;
+        }
 
         res.writeHead(200, { 'Content-Type': 'text/html' });
         res.end('<h1>Authenticated!</h1>');

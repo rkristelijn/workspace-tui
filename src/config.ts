@@ -3,8 +3,8 @@
  * Stores OAuth credentials in ~/.workspace-tui/config.json
  */
 
-import * as fs from 'node:fs';
-import * as path from 'node:path';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { dirname } from 'node:path';
 
 /**
  * Application configuration structure
@@ -29,10 +29,11 @@ export type Config = {
  * @returns Configuration object, or empty config if file doesn't exist
  */
 export function loadConfig(): Config {
+  // Prefer spread operator here
   const configPath = process.env.CONFIG_PATH || `${process.env.HOME}/.workspace-tui/config.json`;
 
   try {
-    const data = fs.readFileSync(configPath, 'utf-8');
+    const data = readFileSync(configPath, 'utf-8');
     return JSON.parse(data);
   } catch {
     return { providers: {} };
@@ -46,10 +47,10 @@ export function loadConfig(): Config {
 export function saveConfig(config: Config): void {
   const configPath = process.env.CONFIG_PATH || `${process.env.HOME}/.workspace-tui/config.json`;
 
-  const dir = path.dirname(configPath);
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
+  const dir = dirname(configPath);
+  if (!existsSync(dir)) {
+    mkdirSync(dir, { recursive: true });
   }
 
-  fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+  writeFileSync(configPath, JSON.stringify(config, null, 2));
 }
