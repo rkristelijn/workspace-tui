@@ -126,3 +126,8 @@ src/providers/google/
 - [Single Responsibility Principle](https://en.wikipedia.org/wiki/Single-responsibility_principle)
 - [Code Complete](https://www.amazon.com/Code-Complete-Practical-Handbook-Construction/dp/0735619670) - recommends 200 lines max
 - llama-cli: 600 lines max (C++), 300 lines max (headers)
+
+## Enforcement
+
+- `scripts/checks/filesize.sh`
+- `scripts/checks/complexity.sh` (via Biome)

@@ -1,9 +1,16 @@
 #!/usr/bin/env bash
-# Shared UI utilities for consistent terminal output
+# Shared UI library — single source of truth for terminal output.
+#
+# Why: Centralized color/formatting prevents hardcoded ANSI scattered
+# across scripts. Respects NO_COLOR (https://no-color.org/) for
+# accessibility and CI environments.
+#
+# Usage: source this file, then call print_* functions.
+# Never use raw echo/printf for user-facing output in scripts.
+#
+# @see docs/adr/006-editorconfig-biome.md (consistency rules)
 
-TERM_WIDTH=$(tput cols 2>/dev/null || echo 80)
-
-# Colors (respects NO_COLOR)
+# Respect NO_COLOR standard for accessibility
 if [[ -z "${NO_COLOR:-}" ]]; then
   RED='\033[0;91m'
   GREEN='\033[0;92m'
@@ -16,20 +23,18 @@ fi
 
 CHECK="✓"
 CROSS="✗"
-SKIP="⊘"
 
+# Step output for the pre-commit runner loop
 print_step() {
   local num="$1" name="$2" status="$3" extra="${4:-}"
-  printf "  [%s] %-12s " "$num" "$name"
+  printf "  [%s] %-22s " "$num" "$name"
   case "$status" in
-    success) echo -e "${GREEN}${CHECK}${RESET} ${GRAY}(${extra})${RESET}" ;;
+    success) echo -e "${GREEN}${CHECK}${RESET} ${GRAY}${extra}${RESET}" ;;
     error)   echo -e "${RED}${CROSS}${RESET}" ;;
-    skip)    echo -e "${GRAY}${SKIP} (${extra})${RESET}" ;;
-    fixed)   echo -e "${GREEN}${CHECK}${RESET} ${YELLOW}(${extra})${RESET}" ;;
+    skip)    echo -e "${GRAY}⊘ ${extra}${RESET}" ;;
   esac
 }
 
-print_section() { echo ""; echo "-- $1 --"; }
-print_error() { echo -e "${RED}ERROR:${RESET} $1"; }
+print_error()   { echo -e "${RED}ERROR:${RESET} $1"; }
 print_warning() { echo -e "${YELLOW}WARNING:${RESET} $1"; }
 print_summary() { echo ""; echo -e "${GREEN}All checks passed${RESET} in ${GRAY}$1${RESET}"; }

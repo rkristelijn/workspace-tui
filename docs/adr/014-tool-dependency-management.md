@@ -115,3 +115,8 @@ fi
 - [Homebrew](https://brew.sh/)
 - [apt](https://wiki.debian.org/Apt)
 - llama-cli: `.config/versions.env` + `scripts/dev/setup.sh`
+
+## Enforcement
+
+- `scripts/checks/deps.sh`
+- `.npmrc` (engine-strict)

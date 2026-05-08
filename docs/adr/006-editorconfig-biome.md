@@ -67,3 +67,8 @@ If conflicts arise, Biome takes precedence for JS/TS/JSON files.
 - [EditorConfig](https://editorconfig.org/)
 - [Biome](https://biomejs.dev/)
 - llama-cli uses same pattern
+
+## Enforcement
+
+- `scripts/checks/editorconfig.sh`
+- `biome.json`

@@ -1,26 +1,18 @@
 #!/usr/bin/env bash
-set -euo pipefail
-
-MAX_SOURCE=300
-MAX_TEST=500
-MAX_SCRIPT=200
-FOUND=0
-
-while IFS= read -r file; do
-  lines=$(wc -l <"$file")
-  [[ "$file" == *.test.ts || "$file" == *.spec.ts ]] && max=$MAX_TEST || max=$MAX_SOURCE
-  if ((lines > max)); then
-    echo "$file: $lines lines (max $max)"
-    FOUND=1
-  fi
-done < <(find src -name '*.ts' 2>/dev/null)
-
-while IFS= read -r file; do
-  lines=$(wc -l <"$file")
-  if ((lines > MAX_SCRIPT)); then
-    echo "$file: $lines lines (max $MAX_SCRIPT)"
-    FOUND=1
-  fi
-done < <(find scripts -name '*.sh' 2>/dev/null)
-
-exit $FOUND
+# Enforce max file size — large files signal SRP violations.
+# Thresholds from .config/checks.conf
+# @see docs/adr/012-filesize-complexity-limits.md
+check_filesize() {
+  local found=0
+  while IFS= read -r file; do
+    local lines; lines=$(wc -l <"$file")
+    local max=$MAX_SOURCE_LINES
+    [[ "$file" == *.test.ts || "$file" == *.spec.ts ]] && max=$MAX_TEST_LINES
+    ((lines > max)) && { print_error "$file: $lines lines (max $max)"; found=1; }
+  done < <(find src -name '*.ts' 2>/dev/null)
+  while IFS= read -r file; do
+    local lines; lines=$(wc -l <"$file")
+    ((lines > MAX_SCRIPT_LINES)) && { print_error "$file: $lines lines (max $MAX_SCRIPT_LINES)"; found=1; }
+  done < <(find scripts -name '*.sh' 2>/dev/null)
+  return $found
+}

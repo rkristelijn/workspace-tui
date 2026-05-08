@@ -80,3 +80,8 @@ Reserved for development-only secrets (e.g., AI API keys for testing).
 
 - [Google OAuth 2.0 for Desktop Apps](https://developers.google.com/identity/protocols/oauth2/native-app)
 - [NIST SP 800-63B: Digital Identity Guidelines](https://pages.nist.gov/800-63-3/sp800-63b.html)
+
+## Enforcement
+
+- `scripts/checks/no-hardcoded-secrets.sh`
+- `scripts/checks/gitleaks.sh`

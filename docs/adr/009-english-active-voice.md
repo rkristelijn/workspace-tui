@@ -98,3 +98,7 @@ grep -r "will be\|is used\|are used" docs/adr/
 - [Google Developer Documentation Style Guide](https://developers.google.com/style/voice) - Use active voice
 - [Microsoft Writing Style Guide](https://learn.microsoft.com/en-us/style-guide/grammar/verbs#use-active-voice) - Prefer active voice
 - [Plain Language Guidelines](https://www.plainlanguage.gov/guidelines/conversational/use-active-voice/) - Use active voice
+
+## Enforcement
+
+- `scripts/checks/language.sh`

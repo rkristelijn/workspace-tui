@@ -144,3 +144,8 @@ Users can always override: `THEME=light pnpm dev`
 - [ANSI Color Codes](https://en.wikipedia.org/wiki/ANSI_escape_code#Colors)
 - [Terminal Color Schemes](https://github.com/mbadolato/iTerm2-Color-Schemes)
 - llama-cli ADR-080: Theme System
+
+## Enforcement
+
+- `scripts/checks/colors.sh`
+- `scripts/checks/emoji.sh`

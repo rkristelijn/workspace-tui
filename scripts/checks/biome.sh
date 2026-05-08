@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
-set -euo pipefail
-pnpm exec biome check --write . > /dev/null 2>&1
+# Auto-format and lint with Biome (applies safe fixes).
+# @see docs/adr/006-editorconfig-biome.md
+# Runs before other checks so formatting issues don't cascade.
+check_biome() {
+  pnpm exec biome check --write . > /dev/null 2>&1
+}

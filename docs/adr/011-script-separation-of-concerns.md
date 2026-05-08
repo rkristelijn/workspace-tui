@@ -180,3 +180,8 @@ All existing scripts refactored to use `ui.sh`.
 - [Unix Philosophy](https://en.wikipedia.org/wiki/Unix_philosophy) - Do one thing well
 - [Separation of Concerns](https://en.wikipedia.org/wiki/Separation_of_concerns)
 - [Clean Code](https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882) - Single Responsibility Principle
+
+## Enforcement
+
+- `scripts/checks/colors.sh`
+- `scripts/checks/filesize.sh`

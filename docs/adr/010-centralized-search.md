@@ -102,3 +102,7 @@ Works without ripgrep (uses grep).
 
 - [ripgrep](https://github.com/BurntSushi/ripgrep) - faster grep alternative
 - [DRY Principle](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)
+
+## Enforcement
+
+- `scripts/checks/search.sh`

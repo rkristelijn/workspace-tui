@@ -67,3 +67,7 @@ Use `git commit --no-verify` to bypass check if false positive occurs, but docum
 - [NIST Guide to Protecting PII](https://csrc.nist.gov/publications/detail/sp/800-122/final)
 - [GDPR Article 4(1) - Personal Data](https://gdpr-info.eu/art-4-gdpr/)
 - [Piwik PRO: What is PII](https://piwik.pro/blog/what-is-pii-personal-data/)
+
+## Enforcement
+
+- `scripts/checks/pii.sh`

@@ -73,3 +73,7 @@ ln -sf ../../.config/pre-commit .git/hooks/pre-commit
 
 - llama-cli project structure
 - [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html)
+
+## Enforcement
+
+- `scripts/checks/clean-root.sh`
