@@ -1,5 +1,4 @@
 import * as http from 'node:http';
-import * as url from 'node:url';
 import { google } from 'googleapis';
 
 type Credentials = {
@@ -26,7 +25,7 @@ export async function authenticate(clientId: string, clientSecret: string): Prom
     scope: SCOPES,
   });
 
-  console.log('Authorize this app by visiting:\n', authUrl);
+  console.log('Open:', authUrl);
 
   const code = await getAuthCode();
   const { tokens } = await oauth2Client.getToken(code);
@@ -42,20 +41,18 @@ function getAuthCode(): Promise<string> {
   return new Promise((resolve, reject) => {
     const server = http.createServer((req, res) => {
       if (req.url?.startsWith('/oauth2callback')) {
-        const query = url.parse(req.url, true).query;
-        const code = query.code as string;
+        const url = new URL(req.url, 'http://localhost:3000');
+        const code = url.searchParams.get('code');
 
         res.writeHead(200, { 'Content-Type': 'text/html' });
-        res.end('<h1>Authentication successful!</h1><p>You can close this window.</p>');
+        res.end('<h1>Authenticated!</h1>');
 
         server.close();
         resolve(code);
       }
     });
 
-    server.listen(3000, () => {
-      console.log('Waiting for authentication...');
-    });
+    server.listen(3000);
 
     server.on('error', reject);
   });

@@ -3,6 +3,8 @@
  * Orchestrates auth and display — each concern in its own function.
  */
 
+import 'dotenv/config';
+
 import { loadConfig, saveConfig } from './config.js';
 import type { Provider } from './providers/base.js';
 import { authenticate } from './providers/google/auth.js';
