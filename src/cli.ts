@@ -142,14 +142,14 @@ async function main() {
   }
 }
 
-function parseArgs(args: string[]): Cmd | '--help' | undefined {
+export function parseArgs(args: string[]): Cmd | '--help' | undefined {
   const cmd = args[0];
   if (cmd === '--help') return '--help';
   if (['calendars', 'calendar', 'emails', 'tasks', 'lists'].includes(cmd)) return cmd as Cmd;
   return undefined;
 }
 
-function parseOptions(args: string[]) {
+export function parseOptions(args: string[]) {
   const mode = (args.find((a) => a.startsWith('--mode'))?.split('=')[1] || 'ai') as Mode;
   const limit = parseInt(args.find((a) => a.startsWith('--limit'))?.split('=')[1] || '20', 10);
   const offset = parseInt(args.find((a) => a.startsWith('--offset'))?.split('=')[1] || '0', 10);
@@ -189,7 +189,7 @@ function parseOptions(args: string[]) {
   };
 }
 
-function parseOptionalBool(args: string[], flag: string): boolean | undefined {
+export function parseOptionalBool(args: string[], flag: string): boolean | undefined {
   const val = args.find((a) => a.startsWith(`${flag}=`))?.split('=')[1];
   if (val === undefined) return undefined;
   return val === 'true';
@@ -337,7 +337,10 @@ function formatLists(data: unknown[]) {
   }
 }
 
-main().catch((err) => {
-  console.error(err.message);
-  process.exit(1);
-});
+const isMainModule = process.argv[1]?.endsWith('cli.ts');
+if (isMainModule) {
+  main().catch((err) => {
+    console.error(err.message);
+    process.exit(1);
+  });
+}

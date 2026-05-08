@@ -37,7 +37,7 @@ export class GoogleProvider implements Provider {
 
 // ============ Shared Helpers ============
 
-function paginate<T>(items: T[], offset: number, limit: number): PaginatedResult<T> {
+export function paginate<T>(items: T[], offset: number, limit: number): PaginatedResult<T> {
   return {
     data: items.slice(offset, offset + limit),
     total: items.length,
