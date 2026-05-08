@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+source .config/ui.sh
+
+START_TIME=$(date +%s)
+
+branch="$(git symbolic-ref --short HEAD 2>/dev/null || true)"
+
+# Block commits to main
+if [[ "${branch}" == "main" ]]; then
+  print_error "direct commits to main not allowed"
+  exit 1
+fi
+
+# Validate branch naming
+PATTERN="^(feat|fix|chore|docs|refactor|test|ci|style|perf|build)/[a-z0-9]+(-[a-z0-9]+)*$"
+if [[ -n "${branch}" ]] && ! [[ "${branch}" =~ ${PATTERN} ]]; then
+  print_error "branch '${branch}' invalid"
+  echo "Expected: type/description (e.g. feat/google-auth)"
+  exit 1
+fi
+
+print_section "Formatting"
+
+# Biome
+if pnpm lint --write > /dev/null 2>&1; then
+  elapsed=$(run_step ":")
+  print_step "1/2" "biome" "success" "${elapsed}s"
+else
+  print_step "1/2" "biome" "error"
+  pnpm lint --write
+  exit 1
+fi
+
+# TypeScript
+elapsed=$(run_step "pnpm exec tsc -p .config/tsconfig.json --noEmit > /dev/null 2>&1")
+if [[ $? -eq 0 ]]; then
+  print_step "2/2" "typescript" "success" "${elapsed}s"
+else
+  print_step "2/2" "typescript" "error"
+  pnpm exec tsc -p .config/tsconfig.json --noEmit
+  exit 1
+fi
+
+print_section "Security"
+
+# Echo check (enforce ui.sh usage)
+elapsed=$(run_step "bash .config/check-echo.sh > /dev/null 2>&1")
+if [[ $? -eq 0 ]]; then
+  print_step "3/7" "echo" "success" "${elapsed}s"
+else
+  print_step "3/7" "echo" "error"
+  bash .config/check-echo.sh
+  exit 1
+fi
+
+# Gitleaks
+if command -v gitleaks > /dev/null 2>&1; then
+  elapsed=$(run_step "gitleaks detect --no-git --redact > /dev/null 2>&1")
+  if [[ $? -eq 0 ]]; then
+    print_step "4/7" "gitleaks" "success" "${elapsed}s"
+  else
+    print_step "4/7" "gitleaks" "error"
+    gitleaks detect --no-git --redact
+    exit 1
+  fi
+else
+  print_step "4/7" "gitleaks" "skip" "not installed"
+fi
+
+# PII
+elapsed=$(run_step "bash .config/check-pii.sh > /dev/null 2>&1")
+if [[ $? -eq 0 ]]; then
+  print_step "5/7" "pii" "success" "${elapsed}s"
+else
+  print_step "5/7" "pii" "error"
+  bash .config/check-pii.sh
+  exit 1
+fi
+
+# Language
+elapsed=$(run_step "bash .config/check-language.sh > /dev/null 2>&1")
+if [[ $? -eq 0 ]]; then
+  print_step "6/7" "language" "success" "${elapsed}s"
+else
+  print_step "6/7" "language" "error"
+  bash .config/check-language.sh
+  exit 1
+fi
+
+# Emoji (auto-remove)
+STEP_START=$(date +%s)
+EMOJI_FILES=$(bash .config/search.sh '[\x{1F300}-\x{1F9FF}]' 2>/dev/null | cut -d: -f1 | sort -u | grep -v "pre-commit" || true)
+if [[ -n "$EMOJI_FILES" ]]; then
+  for file in $EMOJI_FILES; do
+    sed -i '' 's/[\x{1F300}-\x{1F9FF}]//g' "$file" 2>/dev/null || \
+    sed -i 's/[\x{1F300}-\x{1F9FF}]//g' "$file" 2>/dev/null || true
+  done
+  git add $EMOJI_FILES
+  STEP_END=$(date +%s)
+  print_step "7/7" "emoji" "fixed" "removed, $((STEP_END - STEP_START))s"
+else
+  STEP_END=$(date +%s)
+  print_step "7/7" "emoji" "success" "$((STEP_END - STEP_START))s"
+fi
+
+END_TIME=$(date +%s)
+print_summary "$((END_TIME - START_TIME))s"

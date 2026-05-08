@@ -1,0 +1,25 @@
+{
+	"name": "workspace-tui",
+	"version": "0.1.0",
+	"type": "module",
+	"packageManager": "pnpm@9.0.0",
+	"scripts": {
+		"preinstall": "npx only-allow pnpm",
+		"dev": "tsx --tsconfig .config/tsconfig.json src/index.ts",
+		"test": "vitest",
+		"test:e2e": "cucumber-js",
+		"lint": "biome check --config-path .config .",
+		"format": "biome format --config-path .config --write .",
+		"check": "biome check --config-path .config . && tsc -p .config/tsconfig.json --noEmit && vitest run"
+	},
+	"dependencies": {
+		"googleapis": "^144.0.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.7.3",
+		"@types/node": "^20.12.7",
+		"typescript": "^5.4.5",
+		"tsx": "^4.7.2",
+		"vitest": "^1.6.0"
+	}
+}

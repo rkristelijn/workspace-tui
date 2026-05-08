@@ -1,7 +1,10 @@
-node_modules/
-dist/
+node_modules
+dist
 .env
 *.log
 .DS_Store
+.tmp/
 coverage/
-.nyc_output/
+.cache/
+.config/.pii
+config.json
