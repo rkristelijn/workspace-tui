@@ -1,13 +1,45 @@
 #!/usr/bin/env bash
 # UI utilities for consistent terminal output
 
-# Colors
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
-BLUE='\033[0;34m'
-GRAY='\033[0;90m'
-RESET='\033[0m'
+# Detect terminal background (dark/light)
+# Returns: "dark" or "light"
+detect_theme() {
+  # Check COLORFGBG env var (set by some terminals)
+  # Format: "foreground;background" where 0-7 is dark, 8-15 is light
+  if [[ -n "${COLORFGBG:-}" ]]; then
+    local bg="${COLORFGBG##*;}"
+    if [[ "$bg" =~ ^[0-7]$ ]]; then
+      echo "dark"
+      return
+    elif [[ "$bg" =~ ^[89]$|^1[0-5]$ ]]; then
+      echo "light"
+      return
+    fi
+  fi
+  
+  # Default to dark (most common)
+  echo "dark"
+}
+
+THEME="${THEME:-$(detect_theme)}"
+
+# Colors for dark theme (high contrast on dark background)
+if [[ "$THEME" == "dark" ]]; then
+  RED='\033[0;91m'      # Bright red
+  GREEN='\033[0;92m'    # Bright green
+  YELLOW='\033[0;93m'   # Bright yellow
+  BLUE='\033[0;94m'     # Bright blue
+  GRAY='\033[0;90m'     # Dark gray
+  RESET='\033[0m'
+else
+  # Colors for light theme (high contrast on light background)
+  RED='\033[0;31m'      # Dark red
+  GREEN='\033[0;32m'    # Dark green
+  YELLOW='\033[0;33m'   # Dark yellow (brown)
+  BLUE='\033[0;34m'     # Dark blue
+  GRAY='\033[0;90m'     # Dark gray
+  RESET='\033[0m'
+fi
 
 # Symbols
 CHECK="✓"
@@ -65,7 +97,7 @@ print_warning() {
 # Usage: print_summary "5s"
 print_summary() {
   echo ""
-  echo -e "${GREEN}All checks passed${RESET} in ${BLUE}$1${RESET}"
+  echo -e "${GREEN}All checks passed${RESET} in ${GRAY}$1${RESET}"
 }
 
 # Run step with timing
