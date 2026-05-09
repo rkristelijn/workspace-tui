@@ -1,1 +1,40 @@
-{"tasks":[{"task_description":"Create new docs structure (vision/, requirements/, architecture/, adr/, implementation/, process/)","completed":true},{"task_description":"Move existing files to correct locations","completed":true},{"task_description":"Create ADR-001: Vision","completed":true},{"task_description":"Create ADR-016: TUI Design","completed":true},{"task_description":"Create ADR-080: Theme System","completed":true},{"task_description":"Create requirements/acceptance-criteria.md","completed":true},{"task_description":"Create implementation/definition-of-done.md with DoR/DoD","completed":true},{"task_description":"Create process/workflow.md with quality gates","completed":true},{"task_description":"Fix all ADR references in existing docs","completed":true}],"description":"Restructure docs to V-model with enforced workflow, create missing ADRs, add DoR/DoD","context":["Created docs structure: vision/, requirements/, architecture/, adr/, implementation/, process/. Moved target-architecture.md and general-tui-design.md to architecture/","Created ADR-001 (vision), ADR-016 (TUI design), ADR-080 (theme system) with proper V-model layer references","Created acceptance-criteria.md, definition-of-done.md (with DoR/DoD), and workflow.md with enforced quality gates","Fixed all ADR references: ADR-001 in 005-interface-segregation.md, ADR-016 in general-tui-design.md (2 places), ADR-080 in 013-terminal-theme-accessibility.md. ADR-001 in general-tui-design line 78 is just example UI text, not a real reference."],"modified_files":["docs/architecture/target-architecture.md","docs/architecture/general-tui-design.md","docs/vision/001-vision.md","docs/architecture/016-tui-design.md","docs/adr/080-theme-system.md","docs/requirements/acceptance-criteria.md","docs/implementation/definition-of-done.md","docs/process/workflow.md","docs/adr/005-interface-segregation.md","docs/adr/013-terminal-theme-accessibility.md","docs/architecture/general-tui-design.md"],"id":"1778311121388"}
+{
+  "tasks": [
+    {
+      "task_description": "Create new docs structure (vision/, requirements/, architecture/, adr/, implementation/, process/)",
+      "completed": true
+    },
+    { "task_description": "Move existing files to correct locations", "completed": true },
+    { "task_description": "Create ADR-001: Vision", "completed": true },
+    { "task_description": "Create ADR-016: TUI Design", "completed": true },
+    { "task_description": "Create ADR-080: Theme System", "completed": true },
+    { "task_description": "Create requirements/acceptance-criteria.md", "completed": true },
+    {
+      "task_description": "Create implementation/definition-of-done.md with DoR/DoD",
+      "completed": true
+    },
+    { "task_description": "Create process/workflow.md with quality gates", "completed": true },
+    { "task_description": "Fix all ADR references in existing docs", "completed": true }
+  ],
+  "description": "Restructure docs to V-model with enforced workflow, create missing ADRs, add DoR/DoD",
+  "context": [
+    "Created docs structure: vision/, requirements/, architecture/, adr/, implementation/, process/. Moved target-architecture.md and general-tui-design.md to architecture/",
+    "Created ADR-001 (vision), ADR-016 (TUI design), ADR-080 (theme system) with proper V-model layer references",
+    "Created acceptance-criteria.md, definition-of-done.md (with DoR/DoD), and workflow.md with enforced quality gates",
+    "Fixed all ADR references: ADR-001 in 005-interface-segregation.md, ADR-016 in general-tui-design.md (2 places), ADR-080 in 013-terminal-theme-accessibility.md. ADR-001 in general-tui-design line 78 is just example UI text, not a real reference."
+  ],
+  "modified_files": [
+    "docs/architecture/target-architecture.md",
+    "docs/architecture/general-tui-design.md",
+    "docs/vision/001-vision.md",
+    "docs/architecture/016-tui-design.md",
+    "docs/adr/080-theme-system.md",
+    "docs/requirements/acceptance-criteria.md",
+    "docs/implementation/definition-of-done.md",
+    "docs/process/workflow.md",
+    "docs/adr/005-interface-segregation.md",
+    "docs/adr/013-terminal-theme-accessibility.md",
+    "docs/architecture/general-tui-design.md"
+  ],
+  "id": "1778311121388"
+}
