@@ -2,7 +2,7 @@
 # Providers use Interface Segregation — implement only what they support.
 # No god-class with all methods. Each capability (calendar, email, tasks)
 # is a separate interface, providers compose only what they offer.
-# @see docs/adr/005-interface-segregation.md
+# @see docs/adr/003-interface-segregation.md
 check_interface_segregation() {
   local found=0
   # Flag files with >3 class methods (sign of god-class)

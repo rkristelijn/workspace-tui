@@ -1,6 +1,6 @@
 # General TUI Design Principles
 
-*Based on: llama-cli ADR-016, best practices from `htop`, `vim`, `tmux`*
+*Based on: [ADR-016: TUI Design](016-tui-design.md), best practices from `htop`, `vim`, `tmux`*
 
 ## Core principles
 
@@ -134,4 +134,4 @@ Use ANSI 16-color palette (universal terminal support):
 - `htop` — process viewer TUI
 - `vim` — text editor keybindings
 - `tmux` — terminal multiplexer panels
-- llama-cli ADR-016 — TUI design
+- [ADR-016: TUI Design](016-tui-design.md)

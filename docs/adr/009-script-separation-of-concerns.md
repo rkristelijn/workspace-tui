@@ -1,4 +1,4 @@
-# ADR-011: Script Architecture - Separation of Concerns
+# ADR-009: Script Architecture - Separation of Concerns
 
 *Status*: Accepted · *Date*: 2026-05-08
 

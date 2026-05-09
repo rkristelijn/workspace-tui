@@ -1,4 +1,4 @@
-# ADR-007: PII Detection Patterns
+# ADR-005: PII Detection Patterns
 
 *Status*: Accepted · *Date*: 2026-05-08
 

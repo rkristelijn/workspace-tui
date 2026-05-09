@@ -3,7 +3,7 @@
 # Why: Colocation keeps types close to their implementation.
 # A types.ts file becomes a junk drawer that breaks module boundaries.
 #
-# @see docs/adr/005-interface-segregation.md
+# @see docs/adr/003-interface-segregation.md
 # Rules:
 # - No files named types.ts or interfaces.ts (use the module file)
 # - No type/interface exports from index.ts (index is orchestration)

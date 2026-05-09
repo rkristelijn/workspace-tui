@@ -1,4 +1,4 @@
-# ADR-010: Centralized Search Utility
+# ADR-008: Centralized Search Utility
 
 *Status*: Accepted · *Date*: 2026-05-08
 

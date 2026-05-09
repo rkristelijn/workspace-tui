@@ -1,4 +1,4 @@
-# ADR-012: File Size and Complexity Limits
+# ADR-010: File Size and Complexity Limits
 
 *Status*: Accepted · *Date*: 2026-05-08
 

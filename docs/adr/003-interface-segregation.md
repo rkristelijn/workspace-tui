@@ -1,4 +1,4 @@
-# ADR-005: Interface Segregation for Providers
+# ADR-003: Interface Segregation for Providers
 
 *Status*: Accepted · *Date*: 2026-05-08
 
@@ -93,7 +93,7 @@ class GoogleProvider implements Provider {
 ## References
 
 - SOLID Principles: Interface Segregation
-- [ADR-001: Vision](001-vision.md) - multi-provider support
+- [ADR-001: Vision](../vision/001-vision.md) - multi-provider support
 
 ## Enforcement
 

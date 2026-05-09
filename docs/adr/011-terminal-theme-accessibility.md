@@ -1,4 +1,4 @@
-# ADR-013: Terminal Theme and Accessibility
+# ADR-011: Terminal Theme and Accessibility
 
 *Status*: Accepted · *Date*: 2026-05-08
 
@@ -143,7 +143,7 @@ Users can always override: `THEME=light pnpm dev`
 - [WCAG 2.1 Contrast Guidelines](https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html)
 - [ANSI Color Codes](https://en.wikipedia.org/wiki/ANSI_escape_code#Colors)
 - [Terminal Color Schemes](https://github.com/mbadolato/iTerm2-Color-Schemes)
-- llama-cli ADR-080: Theme System
+- [ADR-013: Theme System](013-theme-system.md)
 
 ## Enforcement
 

@@ -1,4 +1,4 @@
-# ADR-014: Tool Dependency Management
+# ADR-012: Tool Dependency Management
 
 *Status*: Accepted · *Date*: 2026-05-08
 

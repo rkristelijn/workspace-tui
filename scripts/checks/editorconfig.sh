@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Enforce .editorconfig rules that formatters might miss.
-# @see docs/adr/006-editorconfig-biome.md
+# @see docs/adr/004-editorconfig-biome.md
 # Currently: trailing whitespace (causes noisy diffs).
 check_editorconfig() {
   local found=0

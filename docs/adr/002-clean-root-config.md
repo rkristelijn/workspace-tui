@@ -1,4 +1,4 @@
-# ADR-004: Clean Root with .config Directory
+# ADR-002: Clean Root with .config Directory
 
 *Status*: Accepted · *Date*: 2026-05-08
 

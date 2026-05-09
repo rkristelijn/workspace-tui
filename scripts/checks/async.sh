@@ -5,7 +5,7 @@
 # Exceptions: new Promise() wrapping callback APIs (http.createServer),
 # and top-level main().catch() as the standard Node entry point pattern.
 check_async() {
-# @see docs/adr/006-editorconfig-biome.md
+# @see docs/adr/004-editorconfig-biome.md
   local found=0
   while IFS= read -r file; do
     if grep -qn "\.then(" "$file" 2>/dev/null; then

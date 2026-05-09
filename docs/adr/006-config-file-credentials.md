@@ -1,4 +1,4 @@
-# ADR-008: Config File for Persistent Credentials
+# ADR-006: Config File for Persistent Credentials
 
 *Status*: Accepted · *Date*: 2026-05-08
 

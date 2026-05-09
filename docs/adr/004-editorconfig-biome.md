@@ -1,4 +1,4 @@
-# ADR-006: EditorConfig + Biome for Multi-Language Formatting
+# ADR-004: EditorConfig + Biome for Multi-Language Formatting
 
 *Status*: Accepted · *Date*: 2026-05-08
 

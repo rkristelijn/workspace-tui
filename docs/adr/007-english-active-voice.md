@@ -1,4 +1,4 @@
-# ADR-009: English-Only with Active Voice
+# ADR-007: English-Only with Active Voice
 
 *Status*: Accepted · *Date*: 2026-05-08
 
