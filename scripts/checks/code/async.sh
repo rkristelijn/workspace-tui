@@ -4,7 +4,20 @@
 # Why: async/await gives better stack traces, readability, and type inference.
 # Exceptions: new Promise() wrapping callback APIs (http.createServer),
 # and top-level main().catch() as the standard Node entry point pattern.
+# Skip config from .config/checks-skip.json
+
 check_async() {
+  # Check if skip is enabled
+  local skip_config=".config/checks-skip.json"
+  if [[ -f "$skip_config" ]]; then
+    local skip_enabled; skip_enabled=$(jq -r '.skip.async.enabled // false' "$skip_config" 2>/dev/null)
+    if [[ "$skip_enabled" == "true" ]]; then
+      local reason; reason=$(jq -r '.skip.async.reason // "No reason"' "$skip_config" 2>/dev/null)
+      echo "SKIP: $reason"
+      return 0
+    fi
+  fi
+  
 # @see docs/adr/001-010/004-editorconfig-biome.md
   local found=0
   while IFS= read -r file; do

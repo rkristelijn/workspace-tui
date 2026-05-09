@@ -22,6 +22,11 @@
       "enabled": true,
       "reason": "Some Dutch words in docs - needs translation pass",
       "files": []
+    },
+    "async": {
+      "enabled": true,
+      "reason": "Some .then() usage instead of async/await - needs refactor",
+      "files": []
     }
   }
 }
