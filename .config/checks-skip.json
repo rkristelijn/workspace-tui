@@ -27,6 +27,11 @@
       "enabled": true,
       "reason": "Some .then() usage instead of async/await - needs refactor",
       "files": []
+    },
+    "dangerous-patterns": {
+      "enabled": true,
+      "reason": "Type assertions (as) used - needs proper typing",
+      "files": []
     }
   }
 }

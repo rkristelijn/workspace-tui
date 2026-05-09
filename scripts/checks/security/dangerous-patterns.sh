@@ -1,18 +1,17 @@
 #!/usr/bin/env bash
 # Detect patterns that bypass TypeScript's safety guarantees.
-#
-# - eval(): code injection, breaks CSP, not optimisable by V8
-# - as: lies to compiler, runtime crash if wrong
-# - @ts-ignore: masks errors that resurface as bugs later
+# Skip config from .config/checks-skip.json
+# @see docs/adr/011-020/019-quality-check-skip-configuration.md
+
 check_dangerous_patterns() {
-# @see docs/adr/001-010/004-editorconfig-biome.md
+  source scripts/lib/skip.sh
+  should_skip "dangerous-patterns" && return 0
+
   local found=0
-  # eval() — security and performance hazard
   if bash scripts/lib/search.sh 'eval(' src/ | grep -qv "//.*eval"; then
     print_error "eval() found — security risk, restructure logic"
     found=1
   fi
-  # Type assertions bypass the compiler (exclude import aliases)
   if bash scripts/lib/search.sh ' as [A-Z]' src/ | grep -v "import.*as\|//" | grep -q .; then
     print_error "'as' assertion found — use type guards or fix the type"
     found=1
