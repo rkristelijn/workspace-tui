@@ -31,23 +31,26 @@ print_step() {
   local term_width; term_width=$(tput cols 2>/dev/null || echo 80)
   local name_width=$((term_width < 80 ? 18 : 22))
 
-  printf "  [%s] %-${name_width}s " "$num" "$name"
-  
+  local prefix="  [${num}] "
+  printf "%s%-${name_width}s " "$prefix" "$name"
+
   case "$status" in
-    success) 
-      echo -e "${GREEN}${CHECK}${RESET} ${GRAY}${extra}${RESET}" 
+    success)
+      echo -e "${GREEN}${CHECK}${RESET} ${GRAY}${extra}${RESET}"
       ;;
-    error)   
-      echo -e "${RED}${CROSS}${RESET}" 
+    error)
+      echo -e "${RED}${CROSS}${RESET}"
       ;;
-    skip)    
-      # Calculate available width for skip message
-      local prefix_width=$((7 + name_width + 3))  # "  [XX/YY] name   ⊘ "
-      local available=$((term_width - prefix_width))
-      
+    skip)
+      # Calculate exact prefix length and available space
+      local prefix_len=$((${#prefix} + name_width + 1 + 2))  # prefix + name + space + "⊘ "
+      local available=$((term_width - prefix_len))
+
       # Truncate if NOWRAP is set and message is too long
       if [[ -n "${NOWRAP:-}" ]] && [[ ${#extra} -gt $available ]]; then
-        local truncated="${extra:0:$((available - 1))}…"
+        # Account for ANSI codes in GRAY and RESET (about 18 chars)
+        local max_text=$((available - 1))
+        local truncated="${extra:0:${max_text}}…"
         echo -e "${GRAY}⊘ ${truncated}${RESET}"
       else
         echo -e "${GRAY}⊘ ${extra}${RESET}"
