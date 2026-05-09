@@ -42,6 +42,6 @@ Layout structure:
 
 ## Related
 
-- [ADR-013: Theme System](../adr/011-020/013-theme-system.md)
-- [ADR-011: Terminal Theme Accessibility](../adr/011-020/011-terminal-theme-accessibility.md)
-- [General TUI Design](../architecture/general-tui-design.md)
+- [ADR-013: Theme System](011-020/013-theme-system.md)
+- [ADR-011: Terminal Theme Accessibility](011-020/011-terminal-theme-accessibility.md)
+- [General TUI Design](/docs/architecture/general-tui-design.md)

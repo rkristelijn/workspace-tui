@@ -32,6 +32,6 @@ Build workspace-tui as a CLI tool that:
 
 ## Related
 
-- [ADR-003: Interface Segregation](../adr/001-010/003-interface-segregation.md)
-- [ADR-006: Config File Credentials](../adr/001-010/006-config-file-credentials.md)
-- [Architecture Overview](../architecture/target-architecture.md)
+- [ADR-003: Interface Segregation](001-010/003-interface-segregation.md)
+- [ADR-006: Config File Credentials](001-010/006-config-file-credentials.md)
+- [Architecture Overview](/docs/architecture/target-architecture.md)

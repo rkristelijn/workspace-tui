@@ -93,7 +93,7 @@ class GoogleProvider implements Provider {
 ## References
 
 - SOLID Principles: Interface Segregation
-- [ADR-001: Vision](../vision/001-vision.md) - multi-provider support
+- [ADR-001: Vision](/docs/vision/001-vision.md) - multi-provider support
 
 ## Enforcement
 
