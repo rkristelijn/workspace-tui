@@ -1,7 +1,7 @@
 /**
  * Human-readable output formatters for CLI commands.
  */
-import type { CalendarEvent, Email, Task } from './data/types.js';
+import type { CalendarEvent, DriveFile, Email, Task } from './data/types.js';
 
 /** Format calendar list for terminal output */
 export function formatCalendars(data: unknown[]) {
@@ -60,5 +60,15 @@ export function formatLists(data: unknown[]) {
   console.log('Task Lists:');
   for (const l of data as Array<{ name: string }>) {
     console.log(`  ${l.name}`);
+  }
+}
+
+/** Format drive files for terminal output */
+export function formatDrive(data: unknown[]) {
+  for (const f of data as DriveFile[]) {
+    const size = f.size ? `${Math.round(f.size / 1024)}KB` : '   -';
+    const modified = f.modifiedTime ? new Date(f.modifiedTime).toLocaleDateString('nl-NL') : '';
+    const name = f.name.substring(0, 50).padEnd(50);
+    console.log(`${size.padStart(6)} ${modified.padEnd(10)} ${name}`);
   }
 }

@@ -128,6 +128,31 @@ export interface EmailQuery {
   sortOrder?: 'asc' | 'desc';
 }
 
+// ============ Drive ============
+
+/** A file or folder in cloud storage */
+export interface DriveFile {
+  id: string;
+  name: string;
+  mimeType: string;
+  size?: number;
+  modifiedTime?: Date;
+  parentId?: string;
+  webViewLink?: string;
+  provider: string;
+}
+
+/** Query parameters for filtering and sorting drive files */
+export interface DriveQuery {
+  search?: string;
+  mimeType?: string;
+  parentId?: string;
+  limit?: number;
+  offset?: number;
+  sortBy?: 'name' | 'modifiedTime' | 'size';
+  sortOrder?: 'asc' | 'desc';
+}
+
 // ============ Pagination ============
 
 /** Paginated response with data, total count, and pagination state */
@@ -159,10 +184,16 @@ export type TaskProvider = {
   getTasks(query: TaskQuery): Promise<PaginatedResult<Task>>;
 };
 
-/** Unified provider combining calendar, email, and task capabilities */
+/** Drive provider interface for fetching files */
+export type DriveProvider = {
+  getFiles(query: DriveQuery): Promise<PaginatedResult<DriveFile>>;
+};
+
+/** Unified provider combining calendar, email, task, and drive capabilities */
 export type Provider = {
   name: string;
   calendar?: CalendarProvider;
   email?: EmailProvider;
   tasks?: TaskProvider;
+  drive?: DriveProvider;
 };
