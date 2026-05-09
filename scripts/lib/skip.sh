@@ -11,10 +11,10 @@ should_skip() {
 
   [[ ! -f "$skip_config" ]] && return 1
 
-  local skip_enabled; skip_enabled=$(jq -r ".skip.${check_name}.enabled // false" "$skip_config" 2>/dev/null)
+  local skip_enabled; skip_enabled=$(jq -r ".skip[\"${check_name}\"].enabled // false" "$skip_config" 2>/dev/null)
 
   if [[ "$skip_enabled" == "true" ]]; then
-    local reason; reason=$(jq -r ".skip.${check_name}.reason // \"No reason\"" "$skip_config" 2>/dev/null)
+    local reason; reason=$(jq -r ".skip[\"${check_name}\"].reason // \"No reason\"" "$skip_config" 2>/dev/null)
     echo "SKIP: $reason"
     return 0
   fi
@@ -32,11 +32,11 @@ should_skip_file() {
 
   [[ ! -f "$skip_config" ]] && return 1
 
-  local skip_enabled; skip_enabled=$(jq -r ".skip.${check_name}.enabled // false" "$skip_config" 2>/dev/null)
+  local skip_enabled; skip_enabled=$(jq -r ".skip[\"${check_name}\"].enabled // false" "$skip_config" 2>/dev/null)
   [[ "$skip_enabled" != "true" ]] && return 1
 
   # Check if file is in skip list
-  local skip_files; skip_files=$(jq -r ".skip.${check_name}.files[]?" "$skip_config" 2>/dev/null)
+  local skip_files; skip_files=$(jq -r ".skip[\"${check_name}\"].files[]?" "$skip_config" 2>/dev/null)
 
   while IFS= read -r skip_file; do
     [[ "$file_path" == "$skip_file" ]] && return 0
