@@ -22,6 +22,7 @@
 
 - [ ] Split src/providers/google/index.ts (424 lines → max 300)
 - [ ] Split src/cli.ts (346 lines → max 300)
+- [ ] Improve comment ratio (15% → min 20%)
 - [ ] Migrate existing imports to use path aliases (@/, @data/, etc.)
 
 See: .config/checks-skip.json for temporarily skipped checks
