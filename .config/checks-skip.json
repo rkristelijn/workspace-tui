@@ -32,6 +32,11 @@
       "enabled": true,
       "reason": "Type assertions (as) used - needs proper typing",
       "files": []
+    },
+    "types-colocation": {
+      "enabled": true,
+      "reason": "Centralized types file exists - needs refactor to colocate",
+      "files": []
     }
   }
 }
