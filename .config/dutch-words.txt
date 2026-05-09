@@ -1,34 +1,71 @@
-# Dutch words to detect
+# Dutch words to detect in English-only codebase
+# Only words that are UNAMBIGUOUSLY Dutch (never valid English)
+#
+# Excluded: words that exist in English too (van, met, de, het, etc.)
+# Strategy: detect full Dutch words/phrases, not short ambiguous ones
+#
+# Common Dutch verbs (never English)
 bijvoorbeeld
 namelijk
-waarom
-omdat
-misschien
-natuurlijk
 eigenlijk
+natuurlijk
+misschien
+waarschijnlijk
+inmiddels
+ondertussen
+vervolgens
+uiteindelijk
+bovendien
+daarnaast
+hierdoor
+hiermee
+hiervoor
+daardoor
+daarmee
+daarvoor
+# Dutch conjunctions/adverbs (never English)
+omdat
+hoewel
+terwijl
+zodra
+wanneer
+totdat
+tenzij
+alsof
+# Dutch adjectives/adverbs (never English)
 gewoon
 altijd
 nooit
+meestal
+soms
+vaak
+weinig
+genoeg
+# Dutch verbs (never English)
 kunnen
 moeten
 willen
 hebben
-zijn
-wordt
 worden
-deze
-maar
-ook
-niet
-wel
-nog
-dan
-als
-bij
-voor
-naar
-van
-met
-een
-het
-de
+wordt
+moeten
+# Dutch nouns commonly used in code comments
+bestand
+bestanden
+functie
+eigenschap
+voorbeeld
+gebruik
+instelling
+instellingen
+overzicht
+aanpassen
+toevoegen
+verwijderen
+bijwerken
+# Dutch phrases (multi-word, high confidence)
+aankomende
+bijlagen
+takenlijsten
+# Project-specific Dutch that leaked in
+specifieke

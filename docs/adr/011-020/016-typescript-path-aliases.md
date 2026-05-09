@@ -67,3 +67,7 @@ grep -r "\.\./\.\./\.\." src/ --include="*.ts"
 
 - [ADR-005: Interface Segregation](../001-010/005-interface-segregation.md)
 - [ADR-009: Script Separation of Concerns](../001-010/009-script-separation-of-concerns.md)
+
+## Enforcement
+
+Enforced by: `import-paths` check in pre-commit/pre-push pipeline.

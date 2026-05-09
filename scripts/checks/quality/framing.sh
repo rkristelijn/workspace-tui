@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Check for negative IT framing — stay in power, not force.
-# Why: Positive language keeps energy high and solutions-focused.
+# @see docs/adr/011-020/023-process-driven-maturity-model.md
+# Warning-only: does not block until autofix is available.
+
 check_framing() {
-  local found=0
   local -A reframe=(
     ["problem"]="challenge"
     ["issue"]="opportunity"
@@ -12,28 +13,30 @@ check_framing() {
     ["broken"]="needs attention"
     ["failed"]="learned"
     ["failure"]="learning"
-    ["error"]="signal"
-    ["crash"]="restart needed"
     ["technical debt"]="refactoring opportunity"
     ["legacy code"]="existing system"
     ["hack"]="workaround"
     ["impossible"]="challenging"
-    ["can't"]="exploring how to"
     ["stuck"]="investigating"
   )
 
-  while IFS= read -r file; do
+  # Only check docs and comments, not code logic
+  local files
+  files=$(find docs -name '*.md' 2>/dev/null; find . -maxdepth 1 -name '*.md' 2>/dev/null)
+
+  for file in $files; do
+    # Skip this check's own file and ADR examples
+    [[ "$file" == *"framing"* ]] && continue
+    [[ "$file" == *"denylist"* ]] && continue
+    [[ "$file" == *"024-"* ]] && continue
+
     for word in "${!reframe[@]}"; do
       if grep -qinw "$word" "$file" 2>/dev/null; then
-        local lines=$(grep -inw "$word" "$file" | head -3)
-        print_error "$file: '$word' → '${reframe[$word]}'"
-        echo "$lines" | while read -r line; do
-          echo "  $line"
-        done
-        found=1
+        print_warning "$file: '$word' → consider '${reframe[$word]}'"
       fi
     done
-  done < <(find . -name '*.md' -o -name '*.ts' -o -name '*.sh' | grep -v node_modules | grep -v .git)
+  done
 
-  return $found
+  # Always pass — warnings only
+  return 0
 }

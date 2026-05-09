@@ -171,3 +171,7 @@ CHECKS=(filesize complexity comments deps interface-segregation import-paths)
 - [ADR-014: Git Workflow Quality Gates](014-git-workflow-quality-gates.md)
 - [ADR-019: Quality Check Skip Configuration](019-quality-check-skip-configuration.md)
 - [ADR-010: Filesize Complexity Limits](/docs/adr/001-010/010-filesize-complexity-limits.md)
+
+## Enforcement
+
+Enforced by: `pre-commit.sh (3-tier)` check in pre-commit/pre-push pipeline.

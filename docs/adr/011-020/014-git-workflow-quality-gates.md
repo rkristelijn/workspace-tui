@@ -87,3 +87,7 @@ CI failures on main automatically create GitHub issues with:
 - [ADR-007: English Active Voice](007-english-active-voice.md)
 - [ADR-010: Filesize Complexity Limits](010-filesize-complexity-limits.md)
 - [Workflow](/docs/process/workflow.md)
+
+## Enforcement
+
+Enforced by: `workflow` check in pre-commit/pre-push pipeline.

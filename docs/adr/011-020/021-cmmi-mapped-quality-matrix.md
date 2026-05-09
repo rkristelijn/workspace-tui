@@ -249,3 +249,7 @@ check_registry_integrity() {
 - [ADR-014: Git Workflow Quality Gates](014-git-workflow-quality-gates.md)
 - llama-cli ADR-048: Lean Quality Framework
 - CMMI-DEV v1.3 (~/Documents/cmmi-checklist-v1.3.xls)
+
+## Enforcement
+
+Enforced by: `maturity-score.sh` check in pre-commit/pre-push pipeline.

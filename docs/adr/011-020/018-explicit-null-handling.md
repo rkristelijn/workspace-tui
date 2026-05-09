@@ -142,3 +142,7 @@ const count = response.data?.count ?? 0;  // Only null/undefined → 0
 
 - [ADR-017: No Any - Type Safety First](017-no-any-type-safety.md)
 - [ADR-016: TypeScript Path Aliases](016-typescript-path-aliases.md)
+
+## Enforcement
+
+Enforced by: `typescript` check in pre-commit/pre-push pipeline.

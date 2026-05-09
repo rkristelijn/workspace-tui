@@ -9,7 +9,7 @@ check_import_paths() {
   while IFS= read -r match; do
     print_error "$match"
     found=1
-  done < <(grep -rn "\.\./\.\./\.\." src/ --include="*.ts" 2>/dev/null || true)
+  done < <(find src -name '*.ts' -exec grep -Hn '\.\./\.\./\.\./' {} + 2>/dev/null || true)
 
   [[ $found -eq 0 ]] && return 0
 

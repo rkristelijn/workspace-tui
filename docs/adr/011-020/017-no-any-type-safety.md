@@ -81,3 +81,7 @@ Existing `any` usage must be replaced with:
 
 - [ADR-016: TypeScript Path Aliases](016-typescript-path-aliases.md)
 - [ADR-007: English Active Voice](../001-010/007-english-active-voice.md)
+
+## Enforcement
+
+Enforced by: `typescript` check in pre-commit/pre-push pipeline.

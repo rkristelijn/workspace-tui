@@ -4,19 +4,25 @@
 # Why: Single point to swap search backends (rg vs grep) and ensure
 # .gitignore is respected. Prevents inconsistent grep flags across scripts.
 #
-# Usage: bash scripts/lib/search.sh 'pattern' [paths...]
+# Usage: search_files 'pattern' [paths...]
 # Default paths: src/ docs/
 #
-# @see scripts/checks/search.sh (enforces usage of this file)
-set -euo pipefail
+# @see docs/adr/001-010/008-centralized-search.md
 
-PATTERN="$1"
-shift
-PATHS="${*:-src/ docs/}"
+search_files() {
+  local pattern="$1"
+  shift
+  local paths="${*:-src/ docs/}"
 
-# Prefer ripgrep: faster, respects .gitignore by default
-if command -v rg > /dev/null 2>&1; then
-  rg --no-heading --line-number "$PATTERN" $PATHS 2>/dev/null || true
-else
-  grep -rn "$PATTERN" $PATHS 2>/dev/null || true
+  if command -v rg > /dev/null 2>&1; then
+    rg --no-heading --line-number "$pattern" $paths 2>/dev/null || true
+  else
+    find $paths -type f \( -name '*.ts' -o -name '*.md' -o -name '*.sh' \) -exec grep -Hn "$pattern" {} + 2>/dev/null || true
+  fi
+}
+
+# Allow direct invocation: bash scripts/lib/search.sh 'pattern' [paths...]
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+  set -euo pipefail
+  search_files "$@"
 fi

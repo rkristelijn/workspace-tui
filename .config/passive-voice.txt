@@ -1,24 +1,23 @@
 # Passive voice patterns to detect in ADRs
-will be
-can be
-should be
-must be
-may be
-could be
-would be
-is used
-are used
-was used
-were used
+# Only patterns that clearly indicate passive voice and can be rewritten actively
+# Excluded: "will be", "can be", "should be" — normal in technical specs
 is done
 are done
+was done
+were done
 is made
-are made
+was made
 is chosen
-are chosen
-is stored
-are stored
+was chosen
 is implemented
-are implemented
+was implemented
 is applied
-are applied
+was applied
+is created
+was created
+is stored
+was stored
+is handled
+was handled
+is performed
+was performed

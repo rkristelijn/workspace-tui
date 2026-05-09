@@ -189,3 +189,7 @@ Coverage check fails if:
 - [ADR-010: Filesize Complexity Limits](/docs/adr/001-010/010-filesize-complexity-limits.md)
 - [ADR-014: Git Workflow Quality Gates](/docs/adr/011-020/014-git-workflow-quality-gates.md)
 - [Workflow](/docs/process/workflow.md)
+
+## Enforcement
+
+Enforced by: `skip (make skip/unskip)` check in pre-commit/pre-push pipeline.

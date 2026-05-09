@@ -49,3 +49,7 @@ docs/
 ## Related
 
 - [ADR-007: English Active Voice](../001-010/007-english-active-voice.md)
+
+## Enforcement
+
+Enforced by: `docs` check in pre-commit/pre-push pipeline.

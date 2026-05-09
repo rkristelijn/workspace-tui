@@ -1,4 +1,4 @@
-// IT-specifieke reframing: van force naar power
+// IT-specific reframing: from force to power
 export const IT_REFRAMING: Record<string, string> = {
   problem: 'challenge',
   issue: 'opportunity',

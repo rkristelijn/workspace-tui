@@ -171,3 +171,7 @@ done
 - [ADR-020: Shift-Left Fail-Fast Checks](020-shift-left-fail-fast-checks.md)
 - [ADR-021: CMMI-Mapped Quality Matrix](021-cmmi-mapped-quality-matrix.md)
 - [Denylist](/.config/denylist.md) — sed -i portability
+
+## Enforcement
+
+Enforced by: `pre-commit.sh (autofix phase)` check in pre-commit/pre-push pipeline.

@@ -185,3 +185,7 @@ The answer: **branch type declares your intent.** If you're on `feat/streaming`,
 - [ADR-014: Git Workflow Quality Gates](014-git-workflow-quality-gates.md)
 - llama-cli ADR-048: Lean Quality Framework
 - llama-cli ADR-003: V-Model Workflow
+
+## Enforcement
+
+Enforced by: `workflow + branch naming` check in pre-commit/pre-push pipeline.

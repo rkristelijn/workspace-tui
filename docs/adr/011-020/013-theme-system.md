@@ -50,3 +50,7 @@ Theme configuration:
 
 - [ADR-011: Terminal Theme Accessibility](011-020/011-terminal-theme-accessibility.md)
 - [ADR-016: TUI Design](/docs/architecture/016-tui-design.md)
+
+## Enforcement
+
+Enforced by: `colors` check in pre-commit/pre-push pipeline.

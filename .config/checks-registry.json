@@ -302,9 +302,7 @@
         "sh"
       ],
       "skip": {
-        "enabled": true,
-        "reason": "Scripts missing ADR references",
-        "expires": "2026-06-01"
+        "enabled": false
       },
       "category": "quality"
     },
@@ -319,9 +317,7 @@
         "md"
       ],
       "skip": {
-        "enabled": true,
-        "reason": "Dutch words in docs - needs translation",
-        "expires": "2026-06-01"
+        "enabled": false
       },
       "category": "quality"
     },
@@ -398,9 +394,7 @@
         "sh"
       ],
       "skip": {
-        "enabled": true,
-        "reason": "Scripts use grep -r instead of lib/search.sh",
-        "expires": "2026-06-01"
+        "enabled": false
       },
       "category": "quality"
     },
@@ -433,8 +427,7 @@
         "ts"
       ],
       "skip": {
-        "enabled": true,
-        "reason": "New check - needs tuning to avoid false positives in technical docs"
+        "enabled": false
       },
       "category": "quality"
     }
