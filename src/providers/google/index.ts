@@ -1,5 +1,5 @@
 import type { OAuth2Client } from 'google-auth-library';
-import { google, type gmail_v1, type tasks_v1 } from 'googleapis';
+import { type gmail_v1, google, type tasks_v1 } from 'googleapis';
 import type {
   Calendar,
   CalendarEvent,
@@ -234,28 +234,16 @@ class GoogleEmail implements EmailProvider {
 
   private async fetchSingleEmail(gmail: gmail_v1.Gmail, id: string): Promise<Email> {
     const detail = await gmail.users.messages.get({ userId: 'me', id });
-    const headers = detail.data.payload?.headers || [];
-    const attachments = this.parseAttachments(detail.data.payload?.parts || []);
-
-    interface Header {
-      name?: string;
-      value?: string;
-    }
+    const headers = detail.data.payload?.headers ?? [];
+    const attachments = this.parseAttachments(detail.data.payload?.parts ?? []);
 
     return {
       id: detail.data.id ?? '',
       threadId: detail.data.threadId ?? undefined,
-      from: (headers as Header[]).find((h) => h.name === 'From')?.value ?? '',
-      to:
-        (headers as Header[])
-          .find((h) => h.name === 'To')
-          ?.value?.split(',')
-          .map((s: string) => s.trim()) ?? [],
-      cc: (headers as Header[])
-        .find((h) => h.name === 'Cc')
-        ?.value?.split(',')
-        .map((s: string) => s.trim()),
-      subject: (headers as Header[]).find((h) => h.name === 'Subject')?.value ?? '',
+      from: this.getHeader(headers, 'From'),
+      to: this.getHeaderList(headers, 'To'),
+      cc: this.getHeaderList(headers, 'Cc'),
+      subject: this.getHeader(headers, 'Subject'),
       body: detail.data.snippet ?? '',
       snippet: detail.data.snippet ?? undefined,
       date: new Date(Number.parseInt(detail.data.internalDate ?? '0', 10)),
@@ -265,6 +253,23 @@ class GoogleEmail implements EmailProvider {
       attachments,
       provider: 'google' as const,
     };
+  }
+
+  private getHeader(headers: unknown[], name: string): string {
+    interface Header {
+      name?: string;
+      value?: string;
+    }
+    return (headers as Header[]).find((h) => h.name === name)?.value ?? '';
+  }
+
+  private getHeaderList(headers: unknown[], name: string): string[] {
+    interface Header {
+      name?: string;
+      value?: string;
+    }
+    const value = (headers as Header[]).find((h) => h.name === name)?.value;
+    return value?.split(',').map((s) => s.trim()) ?? [];
   }
 
   private parseAttachments(parts: gmail_v1.Schema$MessagePart[]): Email['attachments'] {
