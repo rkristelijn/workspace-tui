@@ -1,4 +1,4 @@
-.PHONY: help install dev test lint format check clean hooks
+.PHONY: help install dev test lint format check clean hooks skip unskip
 
 .DEFAULT_GOAL := help
 
