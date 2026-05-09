@@ -6,6 +6,14 @@
     "lib": ["ES2022"],
     "outDir": "../dist",
     "rootDir": "../src",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["../src/*"],
+      "@data/*": ["../src/data/*"],
+      "@providers/*": ["../src/providers/*"],
+      "@tui/*": ["../src/tui/*"],
+      "@utils/*": ["../src/utils/*"]
+    },
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,

@@ -10,7 +10,7 @@ source .config/checks.conf
 for f in scripts/checks/*/*.sh; do source "$f"; done
 
 # Pre-push: all pre-commit checks + additional integrity checks
-CHECKS=(biome typescript filesize complexity docs comments colors search gitleaks pii language emoji async editorconfig dangerous-patterns filenames deps types-colocation clean-root no-hardcoded-secrets interface-segregation traceability coverage)
+CHECKS=(biome typescript filesize complexity docs comments colors search gitleaks pii language emoji async editorconfig dangerous-patterns filenames deps types-colocation clean-root no-hardcoded-secrets interface-segregation traceability import-paths coverage)
 TOTAL=${#CHECKS[@]}
 START_TIME=$(date +%s)
 
