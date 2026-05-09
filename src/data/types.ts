@@ -170,6 +170,22 @@ export interface PaginatedResult<T> {
 export type CalendarProvider = {
   getCalendars(): Promise<Calendar[]>;
   getEvents(query: CalendarQuery): Promise<PaginatedResult<CalendarEvent>>;
+  createEvent(
+    calendarId: string,
+    event: { title: string; start: string; end: string; location?: string; description?: string }
+  ): Promise<CalendarEvent>;
+  updateEvent(
+    calendarId: string,
+    eventId: string,
+    updates: {
+      title?: string;
+      start?: string;
+      end?: string;
+      location?: string;
+      description?: string;
+    }
+  ): Promise<CalendarEvent>;
+  deleteEvent(calendarId: string, eventId: string): Promise<void>;
 };
 
 /** Email provider interface for fetching emails and attachments */
@@ -182,6 +198,14 @@ export type EmailProvider = {
 export type TaskProvider = {
   getLists(): Promise<TaskList[]>;
   getTasks(query: TaskQuery): Promise<PaginatedResult<Task>>;
+  createTask(listId: string, task: { title: string; notes?: string; due?: string }): Promise<Task>;
+  updateTask(
+    listId: string,
+    taskId: string,
+    updates: { title?: string; notes?: string; due?: string; done?: boolean }
+  ): Promise<Task>;
+  moveTask(listId: string, taskId: string, previousId?: string): Promise<void>;
+  deleteTask(listId: string, taskId: string): Promise<void>;
 };
 
 /** Drive provider interface for fetching and downloading files */

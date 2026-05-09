@@ -69,6 +69,93 @@ async function main() {
     process.exit(0);
   }
 
+  // Action commands (task/event CRUD)
+  if (cmd?.startsWith('task-') || cmd?.startsWith('event-')) {
+    const config = loadConfig();
+    const credentials = await getCredentials(config);
+    const provider = new GoogleProvider(credentials);
+    const arg = (name: string) => args.find((a) => a.startsWith(`--${name}=`))?.split('=')[1];
+    const requireArg = (name: string) => {
+      const v = arg(name);
+      if (!v) {
+        console.error(`--${name}= required`);
+        process.exit(1);
+      }
+      return v;
+    };
+
+    switch (cmd) {
+      case 'task-create': {
+        const task = await provider.tasks.createTask(requireArg('list-id'), {
+          title: requireArg('title'),
+          notes: arg('notes'),
+          due: arg('due'),
+        });
+        console.log(`Created: ${task.title} (${task.id})`);
+        break;
+      }
+      case 'task-done': {
+        const task = await provider.tasks.updateTask(requireArg('list-id'), requireArg('id'), {
+          done: true,
+        });
+        console.log(`Done: ${task.title}`);
+        break;
+      }
+      case 'task-update': {
+        const task = await provider.tasks.updateTask(requireArg('list-id'), requireArg('id'), {
+          title: arg('title'),
+          notes: arg('notes'),
+          due: arg('due'),
+          done: arg('done') === 'true' ? true : arg('done') === 'false' ? false : undefined,
+        });
+        console.log(`Updated: ${task.title}`);
+        break;
+      }
+      case 'task-move': {
+        await provider.tasks.moveTask(requireArg('list-id'), requireArg('id'), arg('after'));
+        console.log('Moved.');
+        break;
+      }
+      case 'task-delete': {
+        await provider.tasks.deleteTask(requireArg('list-id'), requireArg('id'));
+        console.log('Deleted.');
+        break;
+      }
+      case 'event-create': {
+        const event = await provider.calendar.createEvent(requireArg('calendar-id'), {
+          title: requireArg('title'),
+          start: requireArg('start'),
+          end: requireArg('end'),
+          location: arg('location'),
+          description: arg('description'),
+        });
+        console.log(`Created: ${event.title} (${event.id})`);
+        break;
+      }
+      case 'event-update': {
+        const event = await provider.calendar.updateEvent(
+          requireArg('calendar-id'),
+          requireArg('id'),
+          {
+            title: arg('title'),
+            start: arg('start'),
+            end: arg('end'),
+            location: arg('location'),
+            description: arg('description'),
+          }
+        );
+        console.log(`Updated: ${event.title}`);
+        break;
+      }
+      case 'event-delete': {
+        await provider.calendar.deleteEvent(requireArg('calendar-id'), requireArg('id'));
+        console.log('Deleted.');
+        break;
+      }
+    }
+    process.exit(0);
+  }
+
   if (!cmd) {
     console.error('Command required');
     console.log(USAGE.trim());
