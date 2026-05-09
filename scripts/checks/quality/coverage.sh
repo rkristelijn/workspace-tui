@@ -81,3 +81,8 @@ check_script_coverage() {
 
   return $found
 }
+
+# Alias for consistency with other checks
+check_coverage() {
+  check_script_coverage
+}
