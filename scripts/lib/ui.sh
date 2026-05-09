@@ -28,7 +28,12 @@ CROSS="✗"
 # Step output for the pre-commit runner loop
 print_step() {
   local num="$1" name="$2" status="$3" extra="${4:-}"
-  local term_width; term_width=$(tput cols 2>/dev/null || echo 80)
+  
+  # Get terminal width using stty
+  local term_width
+  term_width=$(stty size 2>/dev/null | cut -d' ' -f2)
+  [[ -z "$term_width" ]] && term_width=80
+  
   local name_width=$((term_width < 80 ? 18 : 22))
 
   local prefix="  [${num}] "
