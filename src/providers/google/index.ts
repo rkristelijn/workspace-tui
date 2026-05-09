@@ -1,5 +1,5 @@
 import type { OAuth2Client } from 'google-auth-library';
-import { google } from 'googleapis';
+import { google, type gmail_v1, type tasks_v1 } from 'googleapis';
 import type {
   Calendar,
   CalendarEvent,
@@ -243,25 +243,25 @@ class GoogleEmail implements EmailProvider {
     }
 
     return {
-      id: detail.data.id || '',
-      threadId: detail.data.threadId,
-      from: (headers as Header[]).find((h) => h.name === 'From')?.value || '',
+      id: detail.data.id ?? '',
+      threadId: detail.data.threadId ?? undefined,
+      from: (headers as Header[]).find((h) => h.name === 'From')?.value ?? '',
       to:
         (headers as Header[])
           .find((h) => h.name === 'To')
           ?.value?.split(',')
-          .map((s: string) => s.trim()) || [],
+          .map((s: string) => s.trim()) ?? [],
       cc: (headers as Header[])
         .find((h) => h.name === 'Cc')
         ?.value?.split(',')
         .map((s: string) => s.trim()),
-      subject: (headers as Header[]).find((h) => h.name === 'Subject')?.value || '',
-      body: detail.data.snippet || '',
-      snippet: detail.data.snippet,
-      date: new Date(Number.parseInt(detail.data.internalDate || '0', 10)),
-      read: !detail.data.labelIds?.includes('UNREAD'),
-      starred: detail.data.labelIds?.includes('STARRED'),
-      labels: detail.data.labelIds || [],
+      subject: (headers as Header[]).find((h) => h.name === 'Subject')?.value ?? '',
+      body: detail.data.snippet ?? '',
+      snippet: detail.data.snippet ?? undefined,
+      date: new Date(Number.parseInt(detail.data.internalDate ?? '0', 10)),
+      read: detail.data.labelIds?.includes('UNREAD') === false,
+      starred: detail.data.labelIds?.includes('STARRED') === true,
+      labels: detail.data.labelIds ?? [],
       attachments,
       provider: 'google' as const,
     };
