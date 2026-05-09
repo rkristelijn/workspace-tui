@@ -42,16 +42,18 @@ print_step() {
       echo -e "${RED}${CROSS}${RESET}"
       ;;
     skip)
-      # Calculate exact prefix length and available space
-      local prefix_len=$((${#prefix} + name_width + 1 + 2))  # prefix + name + space + "⊘ "
-      local available=$((term_width - prefix_len))
+      # Truncate if NOWRAP is set
+      if [[ -n "${NOWRAP:-}" ]]; then
+        # Calculate available space for message text
+        local prefix_len=$((${#prefix} + name_width + 1 + 1 + 1))  # prefix + name + space + ⊘ + space
+        local available=$((term_width - prefix_len))
 
-      # Truncate if NOWRAP is set and message is too long
-      if [[ -n "${NOWRAP:-}" ]] && [[ ${#extra} -gt $available ]]; then
-        # Account for ANSI codes in GRAY and RESET (about 18 chars)
-        local max_text=$((available - 1))
-        local truncated="${extra:0:${max_text}}…"
-        echo -e "${GRAY}⊘ ${truncated}${RESET}"
+        if [[ ${#extra} -gt $available ]]; then
+          local truncated="${extra:0:$((available - 4))}..."
+          echo -e "${GRAY}⊘ ${truncated}${RESET}"
+        else
+          echo -e "${GRAY}⊘ ${extra}${RESET}"
+        fi
       else
         echo -e "${GRAY}⊘ ${extra}${RESET}"
       fi
