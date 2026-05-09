@@ -5,19 +5,19 @@
 print_table_row() {
   local -a cols=("$@")
   local -a widths=(30 12 12 12 12)
-  
+
   for i in "${!cols[@]}"; do
     local col="${cols[$i]}"
     local width="${widths[$i]}"
-    
+
     # Calculate visible length (strip ANSI codes)
     local visible; visible=$(echo -e "$col" | sed 's/\x1b\[[0-9;]*m//g')
     local visible_len=${#visible}
-    
+
     # Calculate padding needed
     local padding=$((width - visible_len))
     [[ $padding -lt 0 ]] && padding=0
-    
+
     # Print column with padding
     printf "%b%*s" "$col" "$padding" ""
   done

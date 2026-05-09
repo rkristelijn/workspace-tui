@@ -8,17 +8,17 @@
 should_skip() {
   local check_name="$1"
   local skip_config=".config/checks-skip.json"
-  
+
   [[ ! -f "$skip_config" ]] && return 1
-  
+
   local skip_enabled; skip_enabled=$(jq -r ".skip.${check_name}.enabled // false" "$skip_config" 2>/dev/null)
-  
+
   if [[ "$skip_enabled" == "true" ]]; then
     local reason; reason=$(jq -r ".skip.${check_name}.reason // \"No reason\"" "$skip_config" 2>/dev/null)
     echo "SKIP: $reason"
     return 0
   fi
-  
+
   return 1
 }
 
@@ -29,18 +29,18 @@ should_skip_file() {
   local check_name="$1"
   local file_path="$2"
   local skip_config=".config/checks-skip.json"
-  
+
   [[ ! -f "$skip_config" ]] && return 1
-  
+
   local skip_enabled; skip_enabled=$(jq -r ".skip.${check_name}.enabled // false" "$skip_config" 2>/dev/null)
   [[ "$skip_enabled" != "true" ]] && return 1
-  
+
   # Check if file is in skip list
   local skip_files; skip_files=$(jq -r ".skip.${check_name}.files[]?" "$skip_config" 2>/dev/null)
-  
+
   while IFS= read -r skip_file; do
     [[ "$file_path" == "$skip_file" ]] && return 0
   done <<< "$skip_files"
-  
+
   return 1
 }
