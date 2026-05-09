@@ -1,36 +1,19 @@
 #!/usr/bin/env bash
 # Enforce max file size — large files signal SRP violations.
-# Thresholds from .config/checks.conf
 # Skip config from .config/checks-skip.json
-# @see docs/adr/001-010/010-filesize-complexity-limits.md
+# @see docs/adr/011-020/019-quality-check-skip-configuration.md
 
 check_filesize() {
+  source scripts/lib/skip.sh
+  
   local found=0
-  local skip_config=".config/checks-skip.json"
-  local skip_enabled=false
-  local skip_files=()
-  
-  # Load skip config if exists
-  if [[ -f "$skip_config" ]]; then
-    skip_enabled=$(jq -r '.skip.filesize.enabled // false' "$skip_config" 2>/dev/null)
-    if [[ "$skip_enabled" == "true" ]]; then
-      mapfile -t skip_files < <(jq -r '.skip.filesize.files[]?' "$skip_config" 2>/dev/null)
-    fi
-  fi
-  
   while IFS= read -r file; do
-    # Check if file is in skip list
-    local should_skip=false
-    for skip_file in "${skip_files[@]}"; do
-      [[ "$file" == "$skip_file" ]] && should_skip=true && break
-    done
-    
     local lines; lines=$(wc -l <"$file")
     local max=$MAX_SOURCE_LINES
     [[ "$file" == *.test.ts || "$file" == *.spec.ts ]] && max=$MAX_TEST_LINES
     
     if ((lines > max)); then
-      if [[ "$should_skip" == "true" ]]; then
+      if should_skip_file "filesize" "$file"; then
         print_warning "$file: $lines lines (max $max) - SKIPPED"
       else
         print_error "$file: $lines lines (max $max)"
