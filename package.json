@@ -14,7 +14,9 @@
     "lint": "biome check .",
     "format": "biome format --write .",
     "fix": "biome check --write .",
-    "check": "pnpm format && biome check . && tsc -p .config/tsconfig.json --noEmit && vitest run"
+    "duplication": "jscpd src --min-lines 5 --min-tokens 50",
+    "duplication:check": "bash scripts/checks/duplication.sh",
+    "check": "pnpm format && biome check . && tsc -p .config/tsconfig.json --noEmit && vitest run && pnpm duplication:check"
   },
   "dependencies": {
     "blessed": "^0.1.81",
@@ -27,6 +29,7 @@
     "@types/blessed": "^0.1.27",
     "@types/node": "24.0.3",
     "@vitest/coverage-v8": "^4.1.5",
+    "jscpd": "^4.0.9",
     "tsx": "4.21.0",
     "typescript": "5.8.3",
     "vitest": "4.1.5"
@@ -44,7 +47,8 @@
     },
     "optional": {
       "shellcheck": "0.9.0",
-      "ripgrep": "13.0.0"
+      "ripgrep": "13.0.0",
+      "jscpd": "4.0.0"
     }
   }
 }

@@ -114,7 +114,7 @@ import-paths: ## Import path conventions
 
 ##@ Lint — CI (CMMI 3, optimization)
 
-lint-ci: coverage traceability language emoji async docs colors search framing ## Full suite
+lint-ci: coverage traceability language emoji async docs colors search framing duplication ## Full suite
 
 coverage: ## Test coverage threshold
 	@bash -c 'source scripts/lib/ui.sh; source .config/checks.conf; for f in scripts/checks/*/*.sh; do source "$$f"; done; check_coverage' >/dev/null 2>&1; echo "  coverage             ✓"
@@ -142,6 +142,9 @@ search: ## Centralized search usage
 
 framing: ## Positive language check
 	@bash -c 'source scripts/lib/ui.sh; source scripts/checks/quality/framing.sh; check_framing' >/dev/null 2>&1; echo "  framing              ✓"
+
+duplication: ## Code duplication check
+	@bash -c 'source scripts/lib/ui.sh; source scripts/lib/skip.sh; source scripts/checks/code/duplication.sh; check_duplication' >/dev/null 2>&1; echo "  duplication          ✓"
 
 ##@ Testing
 
