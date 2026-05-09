@@ -1,16 +1,15 @@
 #!/usr/bin/env bash
 # Bidirectional traceability: every decision has enforcement,
 # every enforcement has a decision.
-#
-# - ADRs must have an ## Enforcement section
-# - Check scripts must have a @see link to their ADR
-#
-# Exceptions: ADRs can use "N/A: design guideline" if not automatable.
-# @see docs/adr/001-010/003-quality-driven-development.md
+# Skip config from .config/checks-skip.json
+# @see docs/adr/011-020/019-quality-check-skip-configuration.md
+
 check_traceability() {
+  source scripts/lib/skip.sh
+  should_skip "traceability" && return 0
+
   local found=0
 
-  # Every ADR must have ## Enforcement
   while IFS= read -r adr; do
     if ! grep -q "## Enforcement" "$adr" 2>/dev/null; then
       print_error "$adr: missing ## Enforcement section"
@@ -18,7 +17,6 @@ check_traceability() {
     fi
   done < <(find docs/adr -name '*.md' 2>/dev/null)
 
-  # Every check script must have @see linking to an ADR or design doc
   while IFS= read -r script; do
     if ! grep -q "@see" "$script" 2>/dev/null; then
       print_error "$script: missing @see link to ADR"

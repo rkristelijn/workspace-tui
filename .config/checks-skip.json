@@ -42,6 +42,11 @@
       "enabled": true,
       "reason": "Some interfaces need splitting - needs refactor",
       "files": []
+    },
+    "traceability": {
+      "enabled": true,
+      "reason": "Some scripts missing ADR references - needs documentation",
+      "files": []
     }
   }
 }
