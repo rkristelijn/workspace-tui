@@ -29,7 +29,7 @@ format: ## Format code
 	pnpm format
 
 check: ## Run all quality checks
-	pnpm check
+	@bash scripts/git/pre-push.sh
 
 skip: ## Skip a check: make skip check=filesize reason="Needs refactoring"
 	@if [ -z "$(check)" ]; then echo "Error: check= required"; exit 1; fi
