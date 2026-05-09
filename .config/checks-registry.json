@@ -416,6 +416,21 @@
         "enabled": false
       },
       "category": "quality"
+    },
+    "duplication": {
+      "tier": "ci",
+      "gates": [
+        "check-all"
+      ],
+      "autofix": "none",
+      "cmmi": 3,
+      "filetypes": [
+        "ts"
+      ],
+      "skip": {
+        "enabled": false
+      },
+      "category": "code"
     }
   }
 }
