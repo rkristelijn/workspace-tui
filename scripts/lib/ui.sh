@@ -32,10 +32,27 @@ print_step() {
   local name_width=$((term_width < 80 ? 18 : 22))
 
   printf "  [%s] %-${name_width}s " "$num" "$name"
+  
   case "$status" in
-    success) echo -e "${GREEN}${CHECK}${RESET} ${GRAY}${extra}${RESET}" ;;
-    error)   echo -e "${RED}${CROSS}${RESET}" ;;
-    skip)    echo -e "${GRAY}⊘ ${extra}${RESET}" ;;
+    success) 
+      echo -e "${GREEN}${CHECK}${RESET} ${GRAY}${extra}${RESET}" 
+      ;;
+    error)   
+      echo -e "${RED}${CROSS}${RESET}" 
+      ;;
+    skip)    
+      # Calculate available width for skip message
+      local prefix_width=$((7 + name_width + 3))  # "  [XX/YY] name   ⊘ "
+      local available=$((term_width - prefix_width))
+      
+      # Truncate if NOWRAP is set and message is too long
+      if [[ -n "${NOWRAP:-}" ]] && [[ ${#extra} -gt $available ]]; then
+        local truncated="${extra:0:$((available - 1))}…"
+        echo -e "${GRAY}⊘ ${truncated}${RESET}"
+      else
+        echo -e "${GRAY}⊘ ${extra}${RESET}"
+      fi
+      ;;
   esac
 }
 
