@@ -28,7 +28,10 @@ CROSS="✗"
 # Step output for the pre-commit runner loop
 print_step() {
   local num="$1" name="$2" status="$3" extra="${4:-}"
-  printf "  [%s] %-22s " "$num" "$name"
+  local term_width; term_width=$(tput cols 2>/dev/null || echo 80)
+  local name_width=$((term_width < 80 ? 18 : 22))
+
+  printf "  [%s] %-${name_width}s " "$num" "$name"
   case "$status" in
     success) echo -e "${GREEN}${CHECK}${RESET} ${GRAY}${extra}${RESET}" ;;
     error)   echo -e "${RED}${CROSS}${RESET}" ;;
