@@ -12,6 +12,13 @@ import type {
   Task,
   TaskQuery,
 } from './data/types.js';
+import {
+  formatCalendar,
+  formatCalendars,
+  formatEmails,
+  formatLists,
+  formatTasks,
+} from './formatters.js';
 import { authenticate } from './providers/google/auth.js';
 import { GoogleProvider } from './providers/google/index.js';
 
@@ -44,12 +51,6 @@ Options:
   --to ADDRESS          Filter emails to address
   --done true|false     Filter tasks by done status
   --help                Show this help
-
-Example:
-  node src/cli.ts calendars
-  node src/cli.ts calendar --mode=human --limit=5
-  node src/cli.ts emails --search="invoice" --labels=INBOX
-  node src/cli.ts tasks --list-ids=@default --done=false
 `;
 
 type Cmd = 'calendars' | 'calendar' | 'emails' | 'tasks' | 'lists';
@@ -113,6 +114,7 @@ type CliResult = {
   hasMore: boolean;
 };
 
+/** Main entry point for CLI execution */
 async function main() {
   const args = process.argv.slice(2);
   const cmd = parseArgs(args);
@@ -142,6 +144,7 @@ async function main() {
   }
 }
 
+/** Parse CLI arguments and return the command name */
 export function parseArgs(args: string[]): Cmd | '--help' | undefined {
   const cmd = args[0];
   if (cmd === '--help') return '--help';
@@ -149,6 +152,7 @@ export function parseArgs(args: string[]): Cmd | '--help' | undefined {
   return undefined;
 }
 
+/** Parse CLI options from arguments and return mode and options object */
 export function parseOptions(args: string[]) {
   const mode = (args.find((a) => a.startsWith('--mode'))?.split('=')[1] || 'ai') as Mode;
   const limit = parseInt(args.find((a) => a.startsWith('--limit'))?.split('=')[1] || '20', 10);
@@ -189,12 +193,14 @@ export function parseOptions(args: string[]) {
   };
 }
 
+/** Parse optional boolean flag from arguments */
 export function parseOptionalBool(args: string[], flag: string): boolean | undefined {
   const val = args.find((a) => a.startsWith(`${flag}=`))?.split('=')[1];
   if (val === undefined) return undefined;
   return val === 'true';
 }
 
+/** Get Google credentials from config or environment */
 async function getCredentials(config: ReturnType<typeof loadConfig>) {
   let credentials = config.providers.google;
 
@@ -212,6 +218,7 @@ async function getCredentials(config: ReturnType<typeof loadConfig>) {
   return credentials;
 }
 
+/** Fetch data from provider based on command and options */
 async function getData(
   provider: GoogleProvider,
   cmd: Cmd,
@@ -243,6 +250,7 @@ async function getData(
   }
 }
 
+/** Output result as AI-friendly JSON with schema metadata */
 function outputAi(cmd: Cmd, result: CliResult) {
   const schema = SCHEMA[cmd];
   console.log(
@@ -264,6 +272,7 @@ function outputAi(cmd: Cmd, result: CliResult) {
   );
 }
 
+/** Output result as human-readable formatted text */
 function outputHuman(cmd: Cmd, result: CliResult) {
   const data = result.data;
   if (!Array.isArray(data) || data.length === 0) {
@@ -280,61 +289,6 @@ function outputHuman(cmd: Cmd, result: CliResult) {
   };
 
   formatters[cmd](data);
-}
-
-function formatCalendars(data: unknown[]) {
-  console.log('Calendars:');
-  for (const c of data as Array<{ name: string; color: string; primary: boolean }>) {
-    const primary = c.primary ? ' [PRIMARY]' : '';
-    console.log(`  ${c.color} ${c.name}${primary}`);
-  }
-}
-
-function formatCalendar(data: unknown[]) {
-  for (const e of data as CalendarEvent[]) {
-    const start = new Date(e.start).toLocaleString('nl-NL', {
-      weekday: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-    const end = new Date(e.end).toLocaleString('nl-NL', { hour: '2-digit', minute: '2-digit' });
-    const loc = e.location ? ` @ ${e.location}` : '';
-    const cal = e.calendarName !== 'primary' ? ` [${e.calendarName}]` : '';
-    console.log(`${start}-${end} ${e.title}${loc}${cal}`);
-  }
-}
-
-function formatEmails(data: unknown[]) {
-  for (const e of data as Email[]) {
-    const unread = e.read ? '' : '[UNREAD]';
-    const star = e.starred ? '★' : ' ';
-    const date = new Date(e.date).toLocaleDateString('nl-NL');
-    const from = e.from.split('<')[0].trim().substring(0, 20).padEnd(20);
-    const subject = e.subject.substring(0, 45).padEnd(45);
-    const labels = e.labels?.filter((l) => !l.startsWith('CATEGORY') && l !== 'INBOX').join(',');
-    const labelStr = labels ? ` [${labels}]` : '';
-    console.log(`${star}${unread} ${from} | ${subject} | ${date}${labelStr}`);
-  }
-}
-
-function formatTasks(data: unknown[]) {
-  for (const t of data as Task[]) {
-    const check = t.done ? '✓' : '○';
-    const due = t.due ? ` (${new Date(t.due).toLocaleDateString('nl-NL')})` : '';
-    const subtasks = t.subtasks?.length
-      ? ` [${t.subtasks.filter((s) => !s.done).length}/${t.subtasks.length} sub]`
-      : '';
-    const list = t.listId !== '@default' ? ` [${t.listName || t.listId}]` : '';
-    console.log(`${check} ${t.title}${due}${subtasks}${list}`);
-  }
-}
-
-function formatLists(data: unknown[]) {
-  console.log('Task Lists:');
-  for (const l of data as Array<{ name: string }>) {
-    console.log(`  ${l.name}`);
-  }
 }
 
 const isMainModule = process.argv[1]?.endsWith('cli.ts');

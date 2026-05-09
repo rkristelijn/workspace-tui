@@ -164,13 +164,7 @@
         "*"
       ],
       "skip": {
-        "enabled": true,
-        "reason": "Files need splitting",
-        "files": [
-          "src/providers/google/index.ts",
-          "src/cli.ts"
-        ],
-        "expires": "2026-06-01"
+        "enabled": false
       },
       "category": "structure"
     },
@@ -202,9 +196,7 @@
         "ts"
       ],
       "skip": {
-        "enabled": true,
-        "reason": "Comment ratio below 20% - needs documentation pass",
-        "expires": "2026-06-01"
+        "enabled": false
       },
       "category": "code"
     },
@@ -236,9 +228,7 @@
         "ts"
       ],
       "skip": {
-        "enabled": true,
-        "reason": "Interfaces need splitting",
-        "expires": "2026-06-01"
+        "enabled": false
       },
       "category": "structure"
     },
@@ -254,9 +244,7 @@
         "ts"
       ],
       "skip": {
-        "enabled": true,
-        "reason": "Centralized types file - needs refactor",
-        "expires": "2026-06-01"
+        "enabled": false
       },
       "category": "structure"
     },
@@ -347,9 +335,7 @@
         "ts"
       ],
       "skip": {
-        "enabled": true,
-        "reason": ".then() usage - needs async/await refactor",
-        "expires": "2026-06-01"
+        "enabled": false
       },
       "category": "quality"
     },
