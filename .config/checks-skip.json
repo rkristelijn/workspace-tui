@@ -17,6 +17,11 @@
       "enabled": true,
       "reason": "New check scripts use grep -r instead of lib/search.sh",
       "files": []
+    },
+    "language": {
+      "enabled": true,
+      "reason": "Some Dutch words in docs - needs translation pass",
+      "files": []
     }
   }
 }
