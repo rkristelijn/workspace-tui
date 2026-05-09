@@ -3,6 +3,9 @@
 # @see docs/adr/011-020/014-git-workflow-quality-gates.md
 
 check_script_coverage() {
+  source scripts/lib/skip.sh
+  should_skip "coverage" && return 0
+
   local found=0
 
   source scripts/lib/table.sh
