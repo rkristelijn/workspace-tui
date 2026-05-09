@@ -4,7 +4,15 @@
 # Print table row with proper alignment (accounts for ANSI escape codes)
 print_table_row() {
   local -a cols=("$@")
-  local -a widths=(28 10 8 8 6 6 6 6)
+  local term_width; term_width=$(tput cols 2>/dev/null || echo 80)
+
+  # Compact widths for narrow terminals
+  local -a widths
+  if [[ $term_width -lt 80 ]]; then
+    widths=(20 8 6 6 4 4 4 4)
+  else
+    widths=(28 10 8 8 6 6 6 6)
+  fi
 
   for i in "${!cols[@]}"; do
     local col="${cols[$i]}"
@@ -26,7 +34,8 @@ print_table_row() {
 
 # Print table separator
 print_table_separator() {
-  local total_width=78
+  local term_width; term_width=$(tput cols 2>/dev/null || echo 80)
+  local total_width=$((term_width < 80 ? 56 : 78))
   printf "%.s─" $(seq 1 "$total_width")
   printf "\n"
 }
