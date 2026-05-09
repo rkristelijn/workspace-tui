@@ -12,6 +12,11 @@
       "enabled": true,
       "reason": "Comment ratio below 20% - needs documentation pass",
       "files": []
+    },
+    "search": {
+      "enabled": true,
+      "reason": "New check scripts use grep -r instead of lib/search.sh",
+      "files": []
     }
   }
 }
