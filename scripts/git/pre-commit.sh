@@ -34,7 +34,7 @@ if [[ -n "${branch}" ]] && ! [[ "${branch}" =~ ${BRANCH_PATTERN} ]]; then
 fi
 
 # Ordered check list — fast checks first, slow checks last
-CHECKS=(biome typescript filesize complexity docs comments colors search gitleaks pii language emoji async editorconfig dangerous-patterns filenames deps types-colocation clean-root no-hardcoded-secrets interface-segregation traceability)
+CHECKS=(biome typescript filesize complexity docs comments colors search gitleaks pii language emoji async editorconfig dangerous-patterns filenames deps types-colocation clean-root no-hardcoded-secrets interface-segregation traceability coverage)
 TOTAL=${#CHECKS[@]}
 START_TIME=$(date +%s)
 
