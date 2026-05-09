@@ -17,3 +17,11 @@
 - [ ] Implement quotes system (personally meaningful quotes)
 - [ ] Share quotes with others (optional)
 - [ ] Integrate 4 (or 5) Agreements
+
+## Technical Debt
+
+- [ ] Split src/providers/google/index.ts (424 lines → max 300)
+- [ ] Split src/cli.ts (346 lines → max 300)
+- [ ] Migrate existing imports to use path aliases (@/, @data/, etc.)
+
+See: .config/checks-skip.json for temporarily skipped checks

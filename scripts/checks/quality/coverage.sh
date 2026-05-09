@@ -16,6 +16,13 @@ check_script_coverage() {
   printf "\n"
   print_table_header
   
+  # Load skip config
+  local skip_config=".config/checks-skip.json"
+  local skip_data=""
+  if [[ -f "$skip_config" ]]; then
+    skip_data=$(cat "$skip_config")
+  fi
+  
   # Process by directory (grouped)
   local prev_dir=""
   while IFS= read -r file; do
@@ -54,7 +61,16 @@ check_script_coverage() {
       pkg="\033[0;92m✓\033[0m"
     fi
     
-    print_table_row "  $name" "$pc" "$pp" "$mk" "$pkg"
+    # Check if skipped
+    local skip_status=""
+    if [[ -n "$skip_data" ]]; then
+      local is_skipped; is_skipped=$(echo "$skip_data" | jq -r ".skip.${name}.enabled // false" 2>/dev/null)
+      if [[ "$is_skipped" == "true" ]]; then
+        skip_status=" \033[0;93m(SKIP)\033[0m"
+      fi
+    fi
+    
+    print_table_row "  $name$skip_status" "$pc" "$pp" "$mk" "$pkg"
   done < <(find scripts/checks -name "*.sh" -type f | sort)
   
   printf "\n"

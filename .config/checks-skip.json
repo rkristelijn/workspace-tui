@@ -1,0 +1,12 @@
+{
+  "skip": {
+    "filesize": {
+      "enabled": true,
+      "reason": "Files need splitting - tracked in TODO.md",
+      "files": [
+        "src/providers/google/index.ts",
+        "src/cli.ts"
+      ]
+    }
+  }
+}
