@@ -40,7 +40,24 @@ check_script_coverage() {
     fi
 
     # Check integration
-    local pc="~" pp="~" mk="~" pkg="~"
+    local status="stable" pc="~" pp="~" mk="~" ci="~" pkg="~"
+
+    # Check skip status
+    if [[ -n "$skip_data" ]]; then
+      local is_skipped; is_skipped=$(echo "$skip_data" | jq -r ".skip[\"${name}\"].enabled // false" 2>/dev/null)
+      if [[ "$is_skipped" == "true" ]]; then
+        status=$(echo "$skip_data" | jq -r ".skip[\"${name}\"].status // \"skip\"" 2>/dev/null)
+      fi
+    fi
+
+    # Format status with color
+    case "$status" in
+      skip)    status="${YELLOW}skip${RESET}" ;;
+      trial)   status="${GRAY}trial${RESET}" ;;
+      stable)  status="${GREEN}stable${RESET}" ;;
+      sunset)  status="${YELLOW}sunset${RESET}" ;;
+      deprecated) status="${RED}deprecated${RESET}" ;;
+    esac
 
     if echo "$precommit" | grep -q "^${name}$"; then
       pc="${GREEN}${CHECK}${RESET}"
@@ -60,20 +77,14 @@ check_script_coverage() {
       mk="${GREEN}${CHECK}${RESET}"
     fi
 
+    # CI check (placeholder - would check .github/workflows)
+    ci="~"
+
     if [[ -n "$package" ]] && echo "$package" | grep -q "$name"; then
       pkg="${GREEN}${CHECK}${RESET}"
     fi
 
-    # Check if skipped
-    local skip_status=""
-    if [[ -n "$skip_data" ]]; then
-      local is_skipped; is_skipped=$(echo "$skip_data" | jq -r ".skip.${name}.enabled // false" 2>/dev/null)
-      if [[ "$is_skipped" == "true" ]]; then
-        skip_status=" ${YELLOW}(SKIP)${RESET}"
-      fi
-    fi
-
-    print_table_row "  $name$skip_status" "$pc" "$pp" "$mk" "$pkg"
+    print_table_row "  $name" "$status" "$pc" "$pp" "$mk" "$ci" "$pkg"
   done < <(find scripts/checks -name "*.sh" -type f | sort)
 
   printf "\n"

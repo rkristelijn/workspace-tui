@@ -31,5 +31,18 @@ format: ## Format code
 check: ## Run all quality checks
 	pnpm check
 
+skip: ## Skip a check: make skip check=filesize reason="Needs refactoring"
+	@if [ -z "$(check)" ]; then echo "Error: check= required"; exit 1; fi
+	@if [ -z "$(reason)" ]; then echo "Error: reason= required"; exit 1; fi
+	@jq '.skip["$(check)"] = {"enabled": true, "status": "skip", "reason": "$(reason)", "files": []}' .config/checks-skip.json > .config/checks-skip.json.tmp
+	@mv .config/checks-skip.json.tmp .config/checks-skip.json
+	@echo "✓ Skipped $(check): $(reason)"
+
+unskip: ## Unskip a check: make unskip check=filesize
+	@if [ -z "$(check)" ]; then echo "Error: check= required"; exit 1; fi
+	@jq 'del(.skip["$(check)"])' .config/checks-skip.json > .config/checks-skip.json.tmp
+	@mv .config/checks-skip.json.tmp .config/checks-skip.json
+	@echo "✓ Unskipped $(check)"
+
 clean: ## Clean build artifacts
 	rm -rf node_modules dist .tmp coverage
