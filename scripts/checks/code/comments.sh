@@ -3,7 +3,7 @@
 # Why: Comments explain *why*, not *what*. Undocumented code rots fast.
 # Threshold from .config/checks.conf (MIN_COMMENT_RATIO).
 # Uses cloc for accurate language-aware counting.
-# @see docs/adr/010-filesize-complexity-limits.md
+# @see docs/adr/001-010/010-filesize-complexity-limits.md
 check_comments() {
   command -v cloc > /dev/null 2>&1 || return 0
   local totals; totals=$(cloc src/ scripts/ --not-match-f='(\.test|\.spec)\.ts$' --csv --quiet 2>/dev/null | grep SUM || true)

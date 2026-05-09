@@ -5,7 +5,7 @@
 # - as: lies to compiler, runtime crash if wrong
 # - @ts-ignore: masks errors that resurface as bugs later
 check_dangerous_patterns() {
-# @see docs/adr/004-editorconfig-biome.md
+# @see docs/adr/001-010/004-editorconfig-biome.md
   local found=0
   # eval() — security and performance hazard
   if bash scripts/lib/search.sh 'eval(' src/ | grep -qv "//.*eval"; then

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # No hardcoded credentials, API keys, or URLs with tokens in source.
 # Credentials come from config file or env vars, never committed.
-# @see docs/adr/006-config-file-credentials.md
+# @see docs/adr/001-010/006-config-file-credentials.md
 check_no_hardcoded_secrets() {
   local found=0
   # API keys, tokens, secrets as string literals

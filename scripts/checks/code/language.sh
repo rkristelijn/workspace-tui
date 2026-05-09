@@ -2,7 +2,7 @@
 # Enforce English + active voice in code and docs.
 # Why: Consistent language for international collaboration.
 # Word lists in .config/dutch-words.txt and .config/passive-voice.txt
-# @see docs/adr/007-english-active-voice.md (if exists)
+# @see docs/adr/001-010/007-english-active-voice.md (if exists)
 check_language() {
   local found=0
   if [[ -f ".config/dutch-words.txt" ]]; then

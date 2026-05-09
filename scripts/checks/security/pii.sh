@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Detect PII (names, emails, hostnames) leaking into source.
-# @see docs/adr/005-pii-detection.md
+# @see docs/adr/001-010/005-pii-detection.md
 # Patterns defined in .config/.pii (gitignored, per-developer).
 check_pii() {
   local pii_file=".config/.pii"

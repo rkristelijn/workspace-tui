@@ -36,9 +36,12 @@ check_docs() {
     done
   fi
   
-  # Check max files per directory (excluding subdirs)
+  # Check max files per directory (excluding subdirs, excluding decade folders)
   local max_files=10
   while IFS= read -r dir; do
+    # Skip decade folders like 001-010, 011-020
+    [[ "$(basename "$dir")" =~ ^[0-9]{3}-[0-9]{3}$ ]] && continue
+    
     local count; count=$(find "$dir" -maxdepth 1 -type f | wc -l | tr -d ' ')
     if ((count > max_files)); then
       print_error "$dir: $count files (max $max_files)"

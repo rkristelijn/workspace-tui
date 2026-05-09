@@ -48,5 +48,5 @@ Theme configuration:
 
 ## Related
 
-- [ADR-011: Terminal Theme Accessibility](../adr/011-terminal-theme-accessibility.md)
+- [ADR-011: Terminal Theme Accessibility](../adr/011-020/011-terminal-theme-accessibility.md)
 - [ADR-016: TUI Design](../architecture/016-tui-design.md)

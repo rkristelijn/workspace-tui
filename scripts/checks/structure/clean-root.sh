@@ -2,7 +2,7 @@
 # Config files belong in .config/ — keep root clean.
 # Allowed in root: package.json, biome.json, .editorconfig, .gitignore,
 # .npmrc, .node-version, Makefile, README.md, pnpm-lock.yaml
-# @see docs/adr/002-clean-root-config.md
+# @see docs/adr/001-010/002-clean-root-config.md
 ALLOWED_ROOT="package.json|biome.json|.editorconfig|.gitignore|.npmrc|.node-version|Makefile|README.md|pnpm-lock.yaml|.gitleaksignore"
 
 check_clean_root() {

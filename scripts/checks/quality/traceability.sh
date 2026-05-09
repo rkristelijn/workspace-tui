@@ -6,7 +6,7 @@
 # - Check scripts must have a @see link to their ADR
 #
 # Exceptions: ADRs can use "N/A: design guideline" if not automatable.
-# @see docs/adr/003-quality-driven-development.md
+# @see docs/adr/001-010/003-quality-driven-development.md
 check_traceability() {
   local found=0
 

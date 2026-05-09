@@ -7,10 +7,10 @@ set -euo pipefail
 
 source scripts/lib/ui.sh
 source .config/checks.conf
-for f in scripts/checks/*.sh; do source "$f"; done
+for f in scripts/checks/*/*.sh; do source "$f"; done
 
-# Pre-push specific checks (beyond pre-commit)
-CHECKS=(gitleaks pii no-hardcoded-secrets dangerous-patterns traceability interface-segregation deps)
+# Pre-push: all pre-commit checks + additional integrity checks
+CHECKS=(biome typescript filesize complexity docs comments colors search gitleaks pii language emoji async editorconfig dangerous-patterns filenames deps types-colocation clean-root no-hardcoded-secrets interface-segregation traceability)
 TOTAL=${#CHECKS[@]}
 START_TIME=$(date +%s)
 

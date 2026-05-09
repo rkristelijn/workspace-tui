@@ -3,7 +3,7 @@
 # Why: macOS and Windows are case-insensitive — MyFile.ts and myfile.ts
 # are the same file there but different on Linux CI → silent breakage.
 # kebab-case avoids this entirely.
-# @see docs/adr/004-editorconfig-biome.md
+# @see docs/adr/001-010/004-editorconfig-biome.md
 check_filenames() {
   local found=0
   while IFS= read -r file; do

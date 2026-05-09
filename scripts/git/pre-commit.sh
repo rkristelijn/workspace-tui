@@ -15,11 +15,11 @@ set -euo pipefail
 # outputs error details via print_error/print_warning from ui.sh.
 # No check runs standalone — this runner is the only entry point.
 #
-# @see docs/adr/003-quality-driven-development.md
+# @see docs/adr/001-010/003-quality-driven-development.md
 
 source scripts/lib/ui.sh
 source .config/checks.conf
-for f in scripts/checks/*.sh; do source "$f"; done
+for f in scripts/checks/*/*.sh; do source "$f"; done
 
 # Branch guards — prevent accidental commits to main
 branch="$(git symbolic-ref --short HEAD 2>/dev/null || true)"

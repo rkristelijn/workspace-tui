@@ -8,7 +8,7 @@
 # Usage: source this file, then call print_* functions.
 # Never use raw echo/printf for user-facing output in scripts.
 #
-# @see docs/adr/004-editorconfig-biome.md (consistency rules)
+# @see docs/adr/001-010/004-editorconfig-biome.md (consistency rules)
 
 # Respect NO_COLOR standard for accessibility
 if [[ -z "${NO_COLOR:-}" ]]; then

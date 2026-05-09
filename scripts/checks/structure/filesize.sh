@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Enforce max file size — large files signal SRP violations.
 # Thresholds from .config/checks.conf
-# @see docs/adr/010-filesize-complexity-limits.md
+# @see docs/adr/001-010/010-filesize-complexity-limits.md
 check_filesize() {
   local found=0
   while IFS= read -r file; do
