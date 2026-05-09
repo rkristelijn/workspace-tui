@@ -47,8 +47,8 @@ export function paginate<T>(items: T[], offset: number, limit: number): Paginate
   };
 }
 
-function sortByDate(order: 'asc' | 'desc' | undefined, getDate: (item: any) => number) {
-  return (a: any, b: any) => (order === 'desc' ? getDate(b) - getDate(a) : getDate(a) - getDate(b));
+function sortByDate<T>(order: 'asc' | 'desc' | undefined, getDate: (item: T) => number) {
+  return (a: T, b: T) => (order === 'desc' ? getDate(b) - getDate(a) : getDate(a) - getDate(b));
 }
 
 // ============ Calendar ============
@@ -179,7 +179,7 @@ class GoogleEmail implements EmailProvider {
   }
 
   private async listMessageIds(
-    gmail: any,
+    gmail: gmail_v1.Gmail,
     query: {
       search?: string;
       from?: string;
@@ -201,11 +201,11 @@ class GoogleEmail implements EmailProvider {
       labelIds: query.labels,
     });
 
-    return (response.data.messages || []).map((msg: any) => msg.id || '');
+    return (response.data.messages || []).map((msg) => msg.id || '');
   }
 
   private async filterByStatus(
-    gmail: any,
+    gmail: gmail_v1.Gmail,
     messages: string[],
     read?: boolean,
     starred?: boolean
@@ -214,7 +214,7 @@ class GoogleEmail implements EmailProvider {
 
     const details = await Promise.all(
       messages.slice(0, 100).map((id) =>
-        gmail.users.messages.get({ userId: 'me', id }).then((r: any) => ({
+        gmail.users.messages.get({ userId: 'me', id }).then((r) => ({
           id,
           read: !r.data.labelIds?.includes('UNREAD'),
           starred: r.data.labelIds?.includes('STARRED'),
@@ -228,29 +228,34 @@ class GoogleEmail implements EmailProvider {
       .map((m) => m.id);
   }
 
-  private async fetchEmailDetails(gmail: any, ids: string[]): Promise<Email[]> {
+  private async fetchEmailDetails(gmail: gmail_v1.Gmail, ids: string[]): Promise<Email[]> {
     return Promise.all(ids.map((id) => this.fetchSingleEmail(gmail, id)));
   }
 
-  private async fetchSingleEmail(gmail: any, id: string): Promise<Email> {
+  private async fetchSingleEmail(gmail: gmail_v1.Gmail, id: string): Promise<Email> {
     const detail = await gmail.users.messages.get({ userId: 'me', id });
     const headers = detail.data.payload?.headers || [];
     const attachments = this.parseAttachments(detail.data.payload?.parts || []);
 
+    interface Header {
+      name?: string;
+      value?: string;
+    }
+
     return {
       id: detail.data.id || '',
       threadId: detail.data.threadId,
-      from: headers.find((h: any) => h.name === 'From')?.value || '',
+      from: (headers as Header[]).find((h) => h.name === 'From')?.value || '',
       to:
-        headers
-          .find((h: any) => h.name === 'To')
+        (headers as Header[])
+          .find((h) => h.name === 'To')
           ?.value?.split(',')
           .map((s: string) => s.trim()) || [],
-      cc: headers
-        .find((h: any) => h.name === 'Cc')
+      cc: (headers as Header[])
+        .find((h) => h.name === 'Cc')
         ?.value?.split(',')
         .map((s: string) => s.trim()),
-      subject: headers.find((h: any) => h.name === 'Subject')?.value || '',
+      subject: (headers as Header[]).find((h) => h.name === 'Subject')?.value || '',
       body: detail.data.snippet || '',
       snippet: detail.data.snippet,
       date: new Date(Number.parseInt(detail.data.internalDate || '0', 10)),
@@ -262,7 +267,7 @@ class GoogleEmail implements EmailProvider {
     };
   }
 
-  private parseAttachments(parts: any[]): Email['attachments'] {
+  private parseAttachments(parts: gmail_v1.Schema$MessagePart[]): Email['attachments'] {
     const attachments: Email['attachments'] = [];
     for (const part of parts) {
       if (part.filename && part.body?.attachmentId) {
@@ -378,7 +383,7 @@ class GoogleTasks implements TaskProvider {
       }));
   }
 
-  private buildSubtaskMap(items: any[]): Map<string, Task['subtasks']> {
+  private buildSubtaskMap(items: tasks_v1.Schema$Task[]): Map<string, Task['subtasks']> {
     const map: Map<string, Task['subtasks']> = new Map();
     for (const item of items) {
       if (item.parent) {
