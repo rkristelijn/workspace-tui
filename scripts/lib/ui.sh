@@ -38,3 +38,4 @@ print_step() {
 print_error()   { echo -e "${RED}ERROR:${RESET} $1"; }
 print_warning() { echo -e "${YELLOW}WARNING:${RESET} $1"; }
 print_summary() { echo ""; echo -e "${GREEN}All checks passed${RESET} in ${GRAY}$1${RESET}"; }
+print_header()  { echo ""; echo -e "${GREEN}$1${RESET}"; echo ""; }
