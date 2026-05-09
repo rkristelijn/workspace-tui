@@ -32,7 +32,7 @@ check_script_coverage() {
     # Print directory header if changed
     if [[ "$dir" != "$prev_dir" ]]; then
       [[ -n "$prev_dir" ]] && printf "\n"
-      printf "%b\n" "\033[1m${dir}/\033[0m"
+      echo -e "${BOLD}${dir}/${RESET}"
       prev_dir="$dir"
     fi
     

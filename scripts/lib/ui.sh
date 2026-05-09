@@ -16,9 +16,10 @@ if [[ -z "${NO_COLOR:-}" ]]; then
   GREEN='\033[0;92m'
   YELLOW='\033[0;93m'
   GRAY='\033[0;90m'
+  BOLD='\033[1m'
   RESET='\033[0m'
 else
-  RED='' GREEN='' YELLOW='' GRAY='' RESET=''
+  RED='' GREEN='' YELLOW='' GRAY='' BOLD='' RESET=''
 fi
 
 CHECK="✓"
