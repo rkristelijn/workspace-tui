@@ -4,7 +4,7 @@
 # Print table row with proper alignment (accounts for ANSI escape codes)
 print_table_row() {
   local -a cols=("$@")
-  local -a widths=(28 12 10 10 10 10 12)
+  local -a widths=(28 12 10 10 10 10 10 12)
 
   for i in "${!cols[@]}"; do
     local col="${cols[$i]}"
@@ -26,13 +26,13 @@ print_table_row() {
 
 # Print table separator
 print_table_separator() {
-  local total_width=92
+  local total_width=102
   printf "%.s─" $(seq 1 "$total_width")
   printf "\n"
 }
 
 # Print table header
 print_table_header() {
-  print_table_row "Check" "Status" "Pre-commit" "Pre-push" "Makefile" "CI" "package.json"
+  print_table_row "Check" "Status" "Autofix" "Pre-commit" "Pre-push" "Makefile" "CI" "package.json"
   print_table_separator
 }

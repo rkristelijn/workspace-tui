@@ -1,0 +1,28 @@
+{
+  "checks": {
+    "biome": {"autofix": true},
+    "typescript": {"autofix": false},
+    "filesize": {"autofix": false},
+    "complexity": {"autofix": false},
+    "docs": {"autofix": false},
+    "comments": {"autofix": false},
+    "colors": {"autofix": false},
+    "search": {"autofix": false},
+    "gitleaks": {"autofix": false},
+    "pii": {"autofix": false},
+    "language": {"autofix": false},
+    "emoji": {"autofix": false},
+    "async": {"autofix": false},
+    "editorconfig": {"autofix": true},
+    "dangerous-patterns": {"autofix": false},
+    "filenames": {"autofix": false},
+    "deps": {"autofix": false},
+    "types-colocation": {"autofix": false},
+    "clean-root": {"autofix": false},
+    "no-hardcoded-secrets": {"autofix": false},
+    "interface-segregation": {"autofix": false},
+    "traceability": {"autofix": false},
+    "import-paths": {"autofix": false},
+    "coverage": {"autofix": false}
+  }
+}

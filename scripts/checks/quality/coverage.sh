@@ -21,9 +21,14 @@ check_script_coverage() {
 
   # Load skip config
   local skip_config=".config/checks-skip.json"
+  local metadata_config=".config/checks-metadata.json"
   local skip_data=""
+  local metadata_data=""
   if [[ -f "$skip_config" ]]; then
     skip_data=$(cat "$skip_config")
+  fi
+  if [[ -f "$metadata_config" ]]; then
+    metadata_data=$(cat "$metadata_config")
   fi
 
   # Process by directory (grouped)
@@ -40,13 +45,23 @@ check_script_coverage() {
     fi
 
     # Check integration
-    local status="stable" pc="~" pp="~" mk="~" ci="~" pkg="~"
+    local status="stable" autofix="~" pc="~" pp="~" mk="~" ci="~" pkg="~"
 
     # Check skip status
     if [[ -n "$skip_data" ]]; then
       local is_skipped; is_skipped=$(echo "$skip_data" | jq -r ".skip[\"${name}\"].enabled // false" 2>/dev/null)
       if [[ "$is_skipped" == "true" ]]; then
         status=$(echo "$skip_data" | jq -r ".skip[\"${name}\"].status // \"skip\"" 2>/dev/null)
+      fi
+    fi
+
+    # Check autofix capability
+    if [[ -n "$metadata_data" ]]; then
+      local can_autofix; can_autofix=$(echo "$metadata_data" | jq -r ".checks[\"${name}\"].autofix // false" 2>/dev/null)
+      if [[ "$can_autofix" == "true" ]]; then
+        autofix="${GREEN}✓${RESET}"
+      else
+        autofix="${GRAY}✗${RESET}"
       fi
     fi
 
@@ -84,7 +99,7 @@ check_script_coverage() {
       pkg="${GREEN}${CHECK}${RESET}"
     fi
 
-    print_table_row "  $name" "$status" "$pc" "$pp" "$mk" "$ci" "$pkg"
+    print_table_row "  $name" "$status" "$autofix" "$pc" "$pp" "$mk" "$ci" "$pkg"
   done < <(find scripts/checks -name "*.sh" -type f | sort)
 
   printf "\n"
