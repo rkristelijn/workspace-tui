@@ -1,4 +1,4 @@
-.PHONY: help install dev test lint format check clean hooks skip unskip
+.PHONY: help install dev test lint format check clean hooks skip unskip unskip-all
 
 .DEFAULT_GOAL := help
 
@@ -43,6 +43,10 @@ unskip: ## Unskip a check: make unskip check=filesize
 	@jq 'del(.skip["$(check)"])' .config/checks-skip.json > .config/checks-skip.json.tmp
 	@mv .config/checks-skip.json.tmp .config/checks-skip.json
 	@echo "✓ Unskipped $(check)"
+
+unskip-all: ## Remove all skips - all checks active
+	@echo '{"skip": {}}' > .config/checks-skip.json
+	@echo "✓ All checks unskipped - ready to fix technical debt"
 
 clean: ## Clean build artifacts
 	rm -rf node_modules dist .tmp coverage
