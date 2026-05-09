@@ -13,11 +13,12 @@ type Credentials = {
   refreshToken: string;
 };
 
-/** Required OAuth scopes: read-only access to calendar, email, and tasks */
+/** Required OAuth scopes: read-only access to calendar, email, tasks, and drive */
 const SCOPES = [
   'https://www.googleapis.com/auth/calendar.readonly',
   'https://www.googleapis.com/auth/gmail.readonly',
   'https://www.googleapis.com/auth/tasks.readonly',
+  'https://www.googleapis.com/auth/drive.readonly',
 ];
 
 /** Run OAuth2 flow: open browser, receive callback, return credentials */

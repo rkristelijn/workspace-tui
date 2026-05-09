@@ -39,14 +39,17 @@ dev: ## Run dev server
 
 check-fast: format lint-fast ## Tier 1: autofix + fast lint (< 3s, AI loop)
 	@$(MAKE) -s format lint-fast 2>&1 | tee .tmp/check-fast.log
+	@bash -c 'source scripts/lib/log.sh; log_run "check-fast" 0'
 	$(log_footer)
 
 check: ## Tier 2: full quality gate (pre-push level)
 	@$(MAKE) -s format lint-fast lint-slow test 2>&1 | tee .tmp/check.log
+	@bash -c 'source scripts/lib/log.sh; log_run "check" 0'
 	$(log_footer)
 
 check-all: ## Tier 3: everything including CI-level checks
 	@$(MAKE) -s format lint-fast lint-slow test lint-ci 2>&1 | tee .tmp/check-all.log
+	@bash -c 'source scripts/lib/log.sh; log_run "check-all" 0'
 	$(log_footer)
 
 ##@ Formatting (autofix)
