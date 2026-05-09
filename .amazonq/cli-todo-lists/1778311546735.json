@@ -1,0 +1,29 @@
+{
+  "tasks": [
+    { "task_description": "Create docs validation check script", "completed": true },
+    { "task_description": "Fix ADR numbering (004-014 → 002-012, 080 → 013)", "completed": true },
+    { "task_description": "Update all ADR cross-references after renumbering", "completed": true }
+  ],
+  "description": "Create docs validation check and fix ADR numbering to be sequential",
+  "context": [
+    "Created docs.sh check script that validates: sequential ADR numbering, no duplicates, max 10 files per directory, NNN-kebab-case.md naming convention",
+    "Renumbered all ADRs: 004→002, 005→003, 006→004, 007→005, 008→006, 009→007, 010→008, 011→009, 012→010, 013→011, 014→012, 080→013",
+    "Updated all ADR references in docs/ and scripts/ to match new numbering. Changed both ADR-NNN format and filename references."
+  ],
+  "modified_files": [
+    "scripts/checks/docs.sh",
+    "docs/adr/002-clean-root-config.md",
+    "docs/adr/003-interface-segregation.md",
+    "docs/adr/004-editorconfig-biome.md",
+    "docs/adr/005-pii-detection.md",
+    "docs/adr/006-config-file-credentials.md",
+    "docs/adr/007-english-active-voice.md",
+    "docs/adr/008-centralized-search.md",
+    "docs/adr/009-script-separation-of-concerns.md",
+    "docs/adr/010-filesize-complexity-limits.md",
+    "docs/adr/011-terminal-theme-accessibility.md",
+    "docs/adr/012-tool-dependency-management.md",
+    "docs/adr/013-theme-system.md"
+  ],
+  "id": "1778311546735"
+}

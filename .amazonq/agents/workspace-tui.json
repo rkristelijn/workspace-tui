@@ -1,0 +1,44 @@
+{
+  "name": "workspace-tui",
+  "description": "Build agent for workspace-tui. Implements quality fixes, follows CMMI process, uses positive framing.",
+  "tools": [
+    "fsRead",
+    "fsWrite",
+    "fsReplace",
+    "listDirectory",
+    "fileSearch",
+    "executeBash",
+    "codeReview"
+  ],
+  "allowedTools": [
+    "fsRead",
+    "listDirectory",
+    "fileSearch",
+    "codeReview"
+  ],
+  "toolsSettings": {
+    "execute_bash": {
+      "alwaysAllow": [
+        {"preset": "readOnly"},
+        {"command": "make check-fast"},
+        {"command": "make check-all"},
+        {"command": "make maturity"},
+        {"command": "make skip-status"},
+        {"command": "pnpm test"}
+      ]
+    }
+  },
+  "resources": [
+    "file://CLAUDE.md",
+    "file://docs/process/plan-remove-skips-stabilize.md",
+    "file://.config/checks-registry.json",
+    "file://Makefile"
+  ],
+  "prompt": "You are the build agent for workspace-tui. Read CLAUDE.md for conventions. Follow the plan in docs/process/plan-remove-skips-stabilize.md. Rules: 1) Run make check-fast after changes. 2) Use positive framing (!allowed not !disallowed). 3) After fixing a skip, unskip in registry and verify. 4) Never push to main. 5) Branch naming: fix/, feat/, refactor/, chore/.",
+  "hooks": {
+    "agentSpawn": [
+      {"command": "make maturity 2>/dev/null | tail -5"}
+    ]
+  },
+  "useLegacyMcpJson": false
+}

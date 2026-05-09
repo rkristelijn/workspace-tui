@@ -1,0 +1,82 @@
+# AI Agent Configuration
+#
+# Single source of truth for all AI CLI tools.
+# Run `make agents` to generate provider-specific configs.
+#
+# Supported providers:
+#   kiro       → .kiro/agents/*.json
+#   claude     → CLAUDE.md + .claude/settings.json
+#   q          → .amazonq/agents/*.json
+#   copilot    → .github/copilot-instructions.md
+#   tgpt       → scripts/ai/tgpt-*.sh (--preprompt wrappers)
+#   llama-cli  → scripts/ai/llama-*.sh (--preprompt wrappers)
+
+shared:
+  context: .ai/prompts/context.md
+  conventions: CLAUDE.md
+
+agents:
+  plan:
+    description: "Read-only planning agent. Analyzes code, creates plans, never modifies files."
+    prompt: .ai/prompts/plan.md
+    resources:
+      - CLAUDE.md
+      - docs/process/plan-remove-skips-stabilize.md
+      - docs/process/workflow.md
+      - .config/checks-registry.json
+    tools:
+      kiro: [fs_read, grep, glob, code, web_search, web_fetch]
+      claude: [Read, Grep, Glob, WebSearch, WebFetch]
+      q: [fsRead, listDirectory, fileSearch]
+    allowed:
+      kiro: [fs_read, grep, glob, code]
+      claude: [Read, Grep, Glob]
+      q: [fsRead, listDirectory, fileSearch]
+    shortcuts:
+      kiro: ctrl+shift+p
+    hooks:
+      spawn: "make maturity 2>/dev/null | tail -3"
+    welcome: "Plan agent ready. I read and analyze — I don't modify. What do you want to plan?"
+
+  build:
+    description: "Implementation agent. Writes code, runs checks, delegates to sub-agents."
+    prompt: .ai/prompts/build.md
+    resources:
+      - CLAUDE.md
+      - docs/process/plan-remove-skips-stabilize.md
+      - .config/checks-registry.json
+      - Makefile
+    tools:
+      kiro: [fs_read, fs_write, execute_bash, grep, glob, code, web_search, web_fetch]
+      claude: [Read, Write, Edit, Bash, Grep, Glob, WebSearch, WebFetch]
+      q: [fsRead, fsWrite, fsReplace, executeBash, listDirectory, fileSearch]
+    allowed:
+      kiro: [fs_read, grep, glob, code]
+      claude: [Read, Grep, Glob]
+      q: [fsRead, listDirectory, fileSearch]
+    shortcuts:
+      kiro: ctrl+shift+b
+    hooks:
+      spawn: "make maturity 2>/dev/null | tail -5"
+    welcome: "Build agent ready. I implement, test, and validate. What task should I work on?"
+
+  test:
+    description: "Quality validation agent. Runs checks, writes tests, verifies coverage."
+    prompt: .ai/prompts/test.md
+    resources:
+      - CLAUDE.md
+      - .config/checks-registry.json
+      - .config/checks.conf
+    tools:
+      kiro: [fs_read, fs_write, execute_bash, grep, glob, code]
+      claude: [Read, Write, Edit, Bash, Grep, Glob]
+      q: [fsRead, fsWrite, executeBash, listDirectory, fileSearch]
+    allowed:
+      kiro: [fs_read, grep, glob, code, execute_bash]
+      claude: [Read, Grep, Glob, Bash]
+      q: [fsRead, listDirectory, fileSearch, executeBash]
+    shortcuts:
+      kiro: ctrl+shift+t
+    hooks:
+      spawn: "make skip-status 2>/dev/null; make maturity 2>/dev/null | tail -3"
+    welcome: "Test agent ready. I validate quality and find gaps. Want me to run the full check suite?"

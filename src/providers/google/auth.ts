@@ -1,18 +1,27 @@
+/**
+ * Google OAuth2 authentication flow.
+ * Starts a local HTTP server to receive the OAuth callback,
+ * then exchanges the auth code for a refresh token.
+ */
 import { createServer } from 'node:http';
 import { google } from 'googleapis';
 
+/** Google API credentials with refresh token for offline access */
 type Credentials = {
   clientId: string;
   clientSecret: string;
   refreshToken: string;
 };
 
+/** Required OAuth scopes: read-only access to calendar, email, tasks, and drive */
 const SCOPES = [
   'https://www.googleapis.com/auth/calendar.readonly',
   'https://www.googleapis.com/auth/gmail.readonly',
   'https://www.googleapis.com/auth/tasks.readonly',
+  'https://www.googleapis.com/auth/drive.readonly',
 ];
 
+/** Run OAuth2 flow: open browser, receive callback, return credentials */
 export async function authenticate(clientId: string, clientSecret: string): Promise<Credentials> {
   const oauth2Client = new google.auth.OAuth2(
     clientId,
@@ -37,6 +46,7 @@ export async function authenticate(clientId: string, clientSecret: string): Prom
   };
 }
 
+/** Start local HTTP server on port 3000 and wait for OAuth callback */
 function getAuthCode(): Promise<string> {
   return new Promise((resolve, reject) => {
     const server = createServer((req, res) => {

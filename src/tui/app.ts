@@ -34,6 +34,10 @@ const DEFAULT_LAYOUT: LayoutConfig = {
   ],
 };
 
+/**
+ * Main TUI application with dynamic grid-based layout.
+ * Manages calendar, email, and tasks panels in a 2x2 grid.
+ */
 export class TuiApp {
   private screen: blessed.Widgets.Screen;
   private panels: Map<string, CalendarPanel | EmailPanel | TasksPanel> = new Map();

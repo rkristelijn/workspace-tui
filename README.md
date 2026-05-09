@@ -35,11 +35,11 @@ Options:
 ## Examples
 
 ```bash
-pnpm cli calendar --mode=human          # Agenda aankomende week
-pnpm cli calendars                      # Alle agenda's
-pnpm cli emails --has-attachment        # Emails met bijlagen
-pnpm cli tasks --list-ids="Jady"        # Taken van Jady
-pnpm cli lists                          # Alle takenlijsten
+pnpm cli calendar --mode=human          # Upcoming week agenda
+pnpm cli calendars                      # All calendars
+pnpm cli emails --has-attachment        # Emails with attachments
+pnpm cli tasks --list-ids="Jady"        # Tasks from Jady
+pnpm cli lists                          # All task lists
 ```
 
 ## Docs

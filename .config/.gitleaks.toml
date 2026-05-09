@@ -1,0 +1,8 @@
+# Gitleaks configuration
+# @see docs/adr/001-010/006-config-file-credentials.md
+
+[allowlist]
+paths = [
+  ".env",
+  ".config/.pii"
+]

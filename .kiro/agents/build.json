@@ -1,0 +1,36 @@
+{
+  "name": "build",
+  "description": "Implementation agent. Writes code, runs checks, delegates to sub-agents.",
+  "prompt": "file://.ai/prompts/build.md",
+  "tools": [
+    "fs_read",
+    "fs_write",
+    "execute_bash",
+    "grep",
+    "glob",
+    "code",
+    "web_search",
+    "web_fetch"
+  ],
+  "allowedTools": [
+    "fs_read",
+    "grep",
+    "glob",
+    "code"
+  ],
+  "resources": [
+    "file://CLAUDE.md",
+    "file://docs/process/plan-remove-skips-stabilize.md",
+    "file://.config/checks-registry.json",
+    "file://Makefile"
+  ],
+  "keyboardShortcut": "ctrl+shift+b",
+  "hooks": {
+    "agentSpawn": [
+      {
+        "command": "make maturity 2>/dev/null | tail -5"
+      }
+    ]
+  },
+  "welcomeMessage": "Build agent ready. I implement, test, and validate. What task should I work on?"
+}
