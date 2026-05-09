@@ -38,7 +38,9 @@
   "tools": {
     "required": {
       "gitleaks": "8.18.0",
-      "cloc": "1.90.0"
+      "cloc": "1.90.0",
+      "jq": "1.7.0",
+      "yq": "4.40.0"
     },
     "optional": {
       "shellcheck": "0.9.0",

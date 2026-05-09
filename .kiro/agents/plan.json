@@ -1,0 +1,34 @@
+{
+  "name": "plan",
+  "description": "Read-only planning agent. Analyzes code, creates plans, never modifies files.",
+  "prompt": "file://.ai/prompts/plan.md",
+  "tools": [
+    "fs_read",
+    "grep",
+    "glob",
+    "code",
+    "web_search",
+    "web_fetch"
+  ],
+  "allowedTools": [
+    "fs_read",
+    "grep",
+    "glob",
+    "code"
+  ],
+  "resources": [
+    "file://CLAUDE.md",
+    "file://docs/process/plan-remove-skips-stabilize.md",
+    "file://docs/process/workflow.md",
+    "file://.config/checks-registry.json"
+  ],
+  "keyboardShortcut": "ctrl+shift+p",
+  "hooks": {
+    "agentSpawn": [
+      {
+        "command": "make maturity 2>/dev/null | tail -3"
+      }
+    ]
+  },
+  "welcomeMessage": "Plan agent ready. I read and analyze — I don't modify. What do you want to plan?"
+}

@@ -1,0 +1,34 @@
+{
+  "name": "test",
+  "description": "Quality validation agent. Runs checks, writes tests, verifies coverage.",
+  "prompt": "file://.ai/prompts/test.md",
+  "tools": [
+    "fs_read",
+    "fs_write",
+    "execute_bash",
+    "grep",
+    "glob",
+    "code"
+  ],
+  "allowedTools": [
+    "fs_read",
+    "grep",
+    "glob",
+    "code",
+    "execute_bash"
+  ],
+  "resources": [
+    "file://CLAUDE.md",
+    "file://.config/checks-registry.json",
+    "file://.config/checks.conf"
+  ],
+  "keyboardShortcut": "ctrl+shift+t",
+  "hooks": {
+    "agentSpawn": [
+      {
+        "command": "make skip-status 2>/dev/null; make maturity 2>/dev/null | tail -3"
+      }
+    ]
+  },
+  "welcomeMessage": "Test agent ready. I validate quality and find gaps. Want me to run the full check suite?"
+}

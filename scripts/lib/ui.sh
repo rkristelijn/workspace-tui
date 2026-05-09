@@ -29,10 +29,8 @@ CROSS="✗"
 print_step() {
   local num="$1" name="$2" status="$3" extra="${4:-}"
 
-  # Get terminal width using stty
-  local term_width
-  term_width=$(stty size 2>/dev/null | cut -d' ' -f2)
-  [[ -z "$term_width" ]] && term_width=80
+  # Terminal width — portable (no stty, works in CI/pipes/SSH)
+  local term_width="${COLUMNS:-80}"
 
   local name_width=$((term_width < 80 ? 18 : 22))
 

@@ -1,0 +1,442 @@
+{
+  "checks": {
+    "biome": {
+      "tier": "pre-commit",
+      "gates": [
+        "check-fast",
+        "check",
+        "check-all"
+      ],
+      "autofix": "full",
+      "cmmi": 0,
+      "filetypes": [
+        "ts"
+      ],
+      "skip": {
+        "enabled": false
+      },
+      "category": "format"
+    },
+    "editorconfig": {
+      "tier": "pre-commit",
+      "gates": [
+        "check-fast",
+        "check",
+        "check-all"
+      ],
+      "autofix": "full",
+      "cmmi": 0,
+      "filetypes": [
+        "*"
+      ],
+      "skip": {
+        "enabled": false
+      },
+      "category": "format"
+    },
+    "filenames": {
+      "tier": "pre-commit",
+      "gates": [
+        "check-fast",
+        "check",
+        "check-all"
+      ],
+      "autofix": "none",
+      "cmmi": 0,
+      "filetypes": [
+        "*"
+      ],
+      "skip": {
+        "enabled": false
+      },
+      "category": "structure"
+    },
+    "clean-root": {
+      "tier": "pre-commit",
+      "gates": [
+        "check-fast",
+        "check",
+        "check-all"
+      ],
+      "autofix": "none",
+      "cmmi": 0,
+      "filetypes": [
+        "*"
+      ],
+      "skip": {
+        "enabled": false
+      },
+      "category": "structure"
+    },
+    "gitleaks": {
+      "tier": "pre-commit",
+      "gates": [
+        "check-fast",
+        "check",
+        "check-all"
+      ],
+      "autofix": "none",
+      "cmmi": 1,
+      "filetypes": [
+        "*"
+      ],
+      "skip": {
+        "enabled": false
+      },
+      "category": "security"
+    },
+    "no-hardcoded-secrets": {
+      "tier": "pre-commit",
+      "gates": [
+        "check-fast",
+        "check",
+        "check-all"
+      ],
+      "autofix": "none",
+      "cmmi": 1,
+      "filetypes": [
+        "*"
+      ],
+      "skip": {
+        "enabled": false
+      },
+      "category": "security"
+    },
+    "pii": {
+      "tier": "pre-commit",
+      "gates": [
+        "check-fast",
+        "check",
+        "check-all"
+      ],
+      "autofix": "none",
+      "cmmi": 1,
+      "filetypes": [
+        "*"
+      ],
+      "skip": {
+        "enabled": false
+      },
+      "category": "security"
+    },
+    "dangerous-patterns": {
+      "tier": "pre-commit",
+      "gates": [
+        "check",
+        "check-all"
+      ],
+      "autofix": "none",
+      "cmmi": 1,
+      "filetypes": [
+        "ts"
+      ],
+      "skip": {
+        "enabled": false
+      },
+      "category": "security"
+    },
+    "typescript": {
+      "tier": "pre-commit",
+      "gates": [
+        "check-fast",
+        "check",
+        "check-all"
+      ],
+      "autofix": "none",
+      "cmmi": 1,
+      "filetypes": [
+        "ts"
+      ],
+      "skip": {
+        "enabled": false
+      },
+      "category": "code"
+    },
+    "filesize": {
+      "tier": "pre-push",
+      "gates": [
+        "check",
+        "check-all"
+      ],
+      "autofix": "none",
+      "cmmi": 2,
+      "filetypes": [
+        "*"
+      ],
+      "skip": {
+        "enabled": true,
+        "reason": "Files need splitting",
+        "files": [
+          "src/providers/google/index.ts",
+          "src/cli.ts"
+        ],
+        "expires": "2026-06-01"
+      },
+      "category": "structure"
+    },
+    "complexity": {
+      "tier": "pre-push",
+      "gates": [
+        "check",
+        "check-all"
+      ],
+      "autofix": "none",
+      "cmmi": 2,
+      "filetypes": [
+        "ts"
+      ],
+      "skip": {
+        "enabled": false
+      },
+      "category": "code"
+    },
+    "comments": {
+      "tier": "pre-push",
+      "gates": [
+        "check",
+        "check-all"
+      ],
+      "autofix": "none",
+      "cmmi": 2,
+      "filetypes": [
+        "ts"
+      ],
+      "skip": {
+        "enabled": true,
+        "reason": "Comment ratio below 20% - needs documentation pass",
+        "expires": "2026-06-01"
+      },
+      "category": "code"
+    },
+    "deps": {
+      "tier": "pre-push",
+      "gates": [
+        "check",
+        "check-all"
+      ],
+      "autofix": "none",
+      "cmmi": 2,
+      "filetypes": [
+        "json"
+      ],
+      "skip": {
+        "enabled": false
+      },
+      "category": "structure"
+    },
+    "interface-segregation": {
+      "tier": "pre-push",
+      "gates": [
+        "check",
+        "check-all"
+      ],
+      "autofix": "none",
+      "cmmi": 2,
+      "filetypes": [
+        "ts"
+      ],
+      "skip": {
+        "enabled": true,
+        "reason": "Interfaces need splitting",
+        "expires": "2026-06-01"
+      },
+      "category": "structure"
+    },
+    "types-colocation": {
+      "tier": "pre-push",
+      "gates": [
+        "check",
+        "check-all"
+      ],
+      "autofix": "none",
+      "cmmi": 2,
+      "filetypes": [
+        "ts"
+      ],
+      "skip": {
+        "enabled": true,
+        "reason": "Centralized types file - needs refactor",
+        "expires": "2026-06-01"
+      },
+      "category": "structure"
+    },
+    "import-paths": {
+      "tier": "pre-push",
+      "gates": [
+        "check",
+        "check-all"
+      ],
+      "autofix": "partial",
+      "cmmi": 2,
+      "filetypes": [
+        "ts"
+      ],
+      "skip": {
+        "enabled": false
+      },
+      "category": "code"
+    },
+    "coverage": {
+      "tier": "ci",
+      "gates": [
+        "check-all"
+      ],
+      "autofix": "none",
+      "cmmi": 2,
+      "filetypes": [
+        "ts"
+      ],
+      "skip": {
+        "enabled": false
+      },
+      "category": "quality"
+    },
+    "traceability": {
+      "tier": "ci",
+      "gates": [
+        "check-all"
+      ],
+      "autofix": "none",
+      "cmmi": 3,
+      "filetypes": [
+        "sh"
+      ],
+      "skip": {
+        "enabled": true,
+        "reason": "Scripts missing ADR references",
+        "expires": "2026-06-01"
+      },
+      "category": "quality"
+    },
+    "language": {
+      "tier": "ci",
+      "gates": [
+        "check-all"
+      ],
+      "autofix": "none",
+      "cmmi": 3,
+      "filetypes": [
+        "md"
+      ],
+      "skip": {
+        "enabled": true,
+        "reason": "Dutch words in docs - needs translation",
+        "expires": "2026-06-01"
+      },
+      "category": "quality"
+    },
+    "emoji": {
+      "tier": "ci",
+      "gates": [
+        "check-all"
+      ],
+      "autofix": "none",
+      "cmmi": 3,
+      "filetypes": [
+        "ts"
+      ],
+      "skip": {
+        "enabled": false
+      },
+      "category": "quality"
+    },
+    "async": {
+      "tier": "ci",
+      "gates": [
+        "check-all"
+      ],
+      "autofix": "none",
+      "cmmi": 3,
+      "filetypes": [
+        "ts"
+      ],
+      "skip": {
+        "enabled": true,
+        "reason": ".then() usage - needs async/await refactor",
+        "expires": "2026-06-01"
+      },
+      "category": "quality"
+    },
+    "docs": {
+      "tier": "ci",
+      "gates": [
+        "check-all"
+      ],
+      "autofix": "none",
+      "cmmi": 3,
+      "filetypes": [
+        "md"
+      ],
+      "skip": {
+        "enabled": false
+      },
+      "category": "quality"
+    },
+    "colors": {
+      "tier": "ci",
+      "gates": [
+        "check-all"
+      ],
+      "autofix": "none",
+      "cmmi": 3,
+      "filetypes": [
+        "ts"
+      ],
+      "skip": {
+        "enabled": false
+      },
+      "category": "quality"
+    },
+    "search": {
+      "tier": "ci",
+      "gates": [
+        "check-all"
+      ],
+      "autofix": "none",
+      "cmmi": 3,
+      "filetypes": [
+        "sh"
+      ],
+      "skip": {
+        "enabled": true,
+        "reason": "Scripts use grep -r instead of lib/search.sh",
+        "expires": "2026-06-01"
+      },
+      "category": "quality"
+    },
+    "workflow": {
+      "tier": "pre-commit",
+      "gates": [
+        "check-fast",
+        "check",
+        "check-all"
+      ],
+      "autofix": "none",
+      "cmmi": 2,
+      "filetypes": [
+        "*"
+      ],
+      "skip": {
+        "enabled": false
+      },
+      "category": "quality"
+    },
+    "framing": {
+      "tier": "ci",
+      "gates": [
+        "check-all"
+      ],
+      "autofix": "none",
+      "cmmi": 3,
+      "filetypes": [
+        "md",
+        "ts"
+      ],
+      "skip": {
+        "enabled": true,
+        "reason": "New check - needs tuning to avoid false positives in technical docs"
+      },
+      "category": "quality"
+    }
+  }
+}
