@@ -37,6 +37,11 @@
       "enabled": true,
       "reason": "Centralized types file exists - needs refactor to colocate",
       "files": []
+    },
+    "interface-segregation": {
+      "enabled": true,
+      "reason": "Some interfaces need splitting - needs refactor",
+      "files": []
     }
   }
 }

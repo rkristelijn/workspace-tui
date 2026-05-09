@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 # Providers use Interface Segregation — implement only what they support.
-# No god-class with all methods. Each capability (calendar, email, tasks)
-# is a separate interface, providers compose only what they offer.
-# @see docs/adr/001-010/003-interface-segregation.md
+# Skip config from .config/checks-skip.json
+# @see docs/adr/011-020/019-quality-check-skip-configuration.md
+
 check_interface_segregation() {
+  source scripts/lib/skip.sh
+  should_skip "interface-segregation" && return 0
+
   local found=0
-  # Flag files with >3 class methods (sign of god-class)
   while IFS= read -r file; do
     local methods; methods=$(grep -c '^\s*async\s\|^\s*public\s\|^\s*private\s' "$file" 2>/dev/null || echo 0)
     if [[ "$methods" -gt 10 ]]; then
