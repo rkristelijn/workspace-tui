@@ -44,6 +44,78 @@ export class GoogleTasks implements TaskProvider {
     return paginate(allTasks, query.offset || 0, query.limit || 50);
   }
 
+  /** Create a new task in the specified list */
+  async createTask(
+    listId: string,
+    task: { title: string; notes?: string; due?: string }
+  ): Promise<Task> {
+    const api = google.tasks({ version: 'v1', auth: this.auth });
+    const response = await api.tasks.insert({
+      tasklist: listId,
+      requestBody: { title: task.title, notes: task.notes, due: task.due },
+    });
+    const t = response.data;
+    return {
+      id: t.id || '',
+      listId,
+      listName: '',
+      title: t.title || '',
+      notes: t.notes || undefined,
+      done: t.status === 'completed',
+      due: t.due ? new Date(t.due) : undefined,
+      provider: 'google',
+    };
+  }
+
+  /** Update an existing task */
+  async updateTask(
+    listId: string,
+    taskId: string,
+    updates: { title?: string; notes?: string; due?: string; done?: boolean }
+  ): Promise<Task> {
+    const api = google.tasks({ version: 'v1', auth: this.auth });
+    const current = await api.tasks.get({ tasklist: listId, task: taskId });
+    const response = await api.tasks.update({
+      tasklist: listId,
+      task: taskId,
+      requestBody: {
+        ...current.data,
+        title: updates.title ?? current.data.title,
+        notes: updates.notes ?? current.data.notes,
+        due: updates.due ?? current.data.due,
+        status:
+          updates.done !== undefined
+            ? updates.done
+              ? 'completed'
+              : 'needsAction'
+            : current.data.status,
+      },
+    });
+    const t = response.data;
+    return {
+      id: t.id || '',
+      listId,
+      listName: '',
+      title: t.title || '',
+      notes: t.notes || undefined,
+      done: t.status === 'completed',
+      due: t.due ? new Date(t.due) : undefined,
+      provider: 'google',
+    };
+  }
+
+  /** Move a task to a new position (after previousId, or to top if undefined) */
+  async moveTask(listId: string, taskId: string, previousId?: string): Promise<void> {
+    const api = google.tasks({ version: 'v1', auth: this.auth });
+    await api.tasks.move({ tasklist: listId, task: taskId, previous: previousId || undefined });
+  }
+
+  /** Delete a task */
+  async deleteTask(listId: string, taskId: string): Promise<void> {
+    const api = google.tasks({ version: 'v1', auth: this.auth });
+    await api.tasks.delete({ tasklist: listId, task: taskId });
+  }
+
   /** Fetch tasks from a specific task list with optional filtering */
   private async fetchTasksForList(
     listId: string,

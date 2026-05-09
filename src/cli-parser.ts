@@ -10,9 +10,29 @@ export type Cmd =
   | 'lists'
   | 'drive'
   | 'download'
-  | 'logout';
+  | 'logout'
+  | 'task-create'
+  | 'task-done'
+  | 'task-update'
+  | 'task-move'
+  | 'task-delete'
+  | 'event-create'
+  | 'event-update'
+  | 'event-delete';
 /** Commands that return data (used for output formatting) */
-export type DataCmd = Exclude<Cmd, 'download' | 'logout'>;
+export type DataCmd = Exclude<
+  Cmd,
+  | 'download'
+  | 'logout'
+  | 'task-create'
+  | 'task-done'
+  | 'task-update'
+  | 'task-move'
+  | 'task-delete'
+  | 'event-create'
+  | 'event-update'
+  | 'event-delete'
+>;
 export type Mode = 'ai' | 'human';
 
 export interface CliOptions {
@@ -54,6 +74,16 @@ Commands:
   drive       List drive files
   download    Download a drive file (--id=FILE_ID --out=path)
   logout      Remove stored credentials
+
+  task-create   Create task (--list-id= --title= [--due= --notes=])
+  task-done     Mark task done (--list-id= --id=)
+  task-update   Update task (--list-id= --id= [--title= --due= --done=])
+  task-move     Reorder task (--list-id= --id= [--after=])
+  task-delete   Delete task (--list-id= --id=)
+
+  event-create  Create event (--calendar-id= --title= --start= --end=)
+  event-update  Update event (--calendar-id= --id= [--title= --start= --end=])
+  event-delete  Delete event (--calendar-id= --id=)
 
 Options:
   --mode ai|human       Output format (default: ai)
@@ -116,12 +146,25 @@ export const SCHEMA = {
 export function parseArgs(args: string[]): Cmd | '--help' | undefined {
   const cmd = args[0];
   if (cmd === '--help') return '--help';
-  if (
-    ['calendars', 'calendar', 'emails', 'tasks', 'lists', 'drive', 'download', 'logout'].includes(
-      cmd
-    )
-  )
-    return cmd as Cmd;
+  const valid: Cmd[] = [
+    'calendars',
+    'calendar',
+    'emails',
+    'tasks',
+    'lists',
+    'drive',
+    'download',
+    'logout',
+    'task-create',
+    'task-done',
+    'task-update',
+    'task-move',
+    'task-delete',
+    'event-create',
+    'event-update',
+    'event-delete',
+  ];
+  if (valid.includes(cmd as Cmd)) return cmd as Cmd;
   return undefined;
 }
 

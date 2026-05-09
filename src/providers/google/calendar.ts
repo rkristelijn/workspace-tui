@@ -54,6 +54,80 @@ export class GoogleCalendar implements CalendarProvider {
     return paginate(allEvents, query.offset || 0, query.limit || 50);
   }
 
+  /** Create a new calendar event */
+  async createEvent(
+    calendarId: string,
+    event: { title: string; start: string; end: string; location?: string; description?: string }
+  ): Promise<CalendarEvent> {
+    const api = google.calendar({ version: 'v3', auth: this.auth });
+    const response = await api.events.insert({
+      calendarId,
+      requestBody: {
+        summary: event.title,
+        start: { dateTime: event.start },
+        end: { dateTime: event.end },
+        location: event.location,
+        description: event.description,
+      },
+    });
+    const e = response.data;
+    return {
+      id: e.id || '',
+      calendarId,
+      calendarName: '',
+      title: e.summary || '',
+      start: new Date(e.start?.dateTime || ''),
+      end: new Date(e.end?.dateTime || ''),
+      location: e.location || undefined,
+      provider: 'google',
+    };
+  }
+
+  /** Update an existing calendar event */
+  async updateEvent(
+    calendarId: string,
+    eventId: string,
+    updates: {
+      title?: string;
+      start?: string;
+      end?: string;
+      location?: string;
+      description?: string;
+    }
+  ): Promise<CalendarEvent> {
+    const api = google.calendar({ version: 'v3', auth: this.auth });
+    const current = await api.events.get({ calendarId, eventId });
+    const response = await api.events.update({
+      calendarId,
+      eventId,
+      requestBody: {
+        ...current.data,
+        summary: updates.title ?? current.data.summary,
+        start: updates.start ? { dateTime: updates.start } : current.data.start,
+        end: updates.end ? { dateTime: updates.end } : current.data.end,
+        location: updates.location ?? current.data.location,
+        description: updates.description ?? current.data.description,
+      },
+    });
+    const e = response.data;
+    return {
+      id: e.id || '',
+      calendarId,
+      calendarName: '',
+      title: e.summary || '',
+      start: new Date(e.start?.dateTime || ''),
+      end: new Date(e.end?.dateTime || ''),
+      location: e.location || undefined,
+      provider: 'google',
+    };
+  }
+
+  /** Delete a calendar event */
+  async deleteEvent(calendarId: string, eventId: string): Promise<void> {
+    const api = google.calendar({ version: 'v3', auth: this.auth });
+    await api.events.delete({ calendarId, eventId });
+  }
+
   /** Fetch events from a single calendar within the given time range */
   private async fetchCalendarEvents(
     calId: string,
