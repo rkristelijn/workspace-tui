@@ -1,4 +1,4 @@
-.PHONY: help install dev test lint format check clean hooks skip unskip unskip-all skip-status
+.PHONY: help install dev test lint format check clean hooks skip unskip unskip-all skip-status checks
 
 .DEFAULT_GOAL := help
 
@@ -51,6 +51,9 @@ unskip-all: ## Remove all skips - all checks active
 skip-status: ## Show all skipped checks and reasons
 	@echo "Skipped checks:"
 	@jq -r '.skip | to_entries[] | "  \(.key): \(.value.reason)"' .config/checks-skip.json || echo "  (none)"
+
+checks: ## Show check coverage table
+	@bash -c "source scripts/checks/quality/coverage.sh && check_script_coverage"
 
 clean: ## Clean build artifacts
 	rm -rf node_modules dist .tmp coverage
