@@ -6,6 +6,9 @@ check_script_coverage() {
   source scripts/lib/skip.sh
   should_skip "coverage" && return 0
 
+  source scripts/lib/terminal.sh
+  check_terminal_width 80
+
   local found=0
 
   source scripts/lib/table.sh
