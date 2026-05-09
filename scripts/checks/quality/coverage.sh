@@ -32,7 +32,7 @@ check_script_coverage() {
     # Print directory header if changed
     if [[ "$dir" != "$prev_dir" ]]; then
       [[ -n "$prev_dir" ]] && printf "\n"
-      printf "\033[1m%s/\033[0m\n" "$dir"
+      printf "%b\n" "\033[1m${dir}/\033[0m"
       prev_dir="$dir"
     fi
     
@@ -40,25 +40,25 @@ check_script_coverage() {
     local pc="~" pp="~" mk="~" pkg="~"
     
     if echo "$precommit" | grep -q "^${name}$"; then
-      pc="\033[0;92m✓\033[0m"
+      pc="${GREEN}${CHECK}${RESET}"
     else
-      pc="\033[0;91m✗\033[0m"
+      pc="${RED}${CROSS}${RESET}"
       found=1
     fi
     
     if echo "$prepush" | grep -q "^${name}$"; then
-      pp="\033[0;92m✓\033[0m"
+      pp="${GREEN}${CHECK}${RESET}"
     else
-      pp="\033[0;91m✗\033[0m"
+      pp="${RED}${CROSS}${RESET}"
       found=1
     fi
     
     if [[ -n "$makefile" ]] && echo "$makefile" | grep -q "$name"; then
-      mk="\033[0;92m✓\033[0m"
+      mk="${GREEN}${CHECK}${RESET}"
     fi
     
     if [[ -n "$package" ]] && echo "$package" | grep -q "$name"; then
-      pkg="\033[0;92m✓\033[0m"
+      pkg="${GREEN}${CHECK}${RESET}"
     fi
     
     # Check if skipped
@@ -66,7 +66,7 @@ check_script_coverage() {
     if [[ -n "$skip_data" ]]; then
       local is_skipped; is_skipped=$(echo "$skip_data" | jq -r ".skip.${name}.enabled // false" 2>/dev/null)
       if [[ "$is_skipped" == "true" ]]; then
-        skip_status=" \033[0;93m(SKIP)\033[0m"
+        skip_status=" ${YELLOW}(SKIP)${RESET}"
       fi
     fi
     
