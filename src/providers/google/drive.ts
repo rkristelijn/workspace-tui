@@ -36,6 +36,20 @@ export class GoogleDrive implements DriveProvider {
     return paginate(files, query.offset || 0, query.limit || 20);
   }
 
+  /** Download file content by ID */
+  async downloadFile(fileId: string): Promise<Buffer | null> {
+    const drive = google.drive({ version: 'v3', auth: this.auth });
+    try {
+      const response = await drive.files.get(
+        { fileId, alt: 'media' },
+        { responseType: 'arraybuffer' }
+      );
+      return Buffer.from(response.data as ArrayBuffer);
+    } catch {
+      return null;
+    }
+  }
+
   /** Build Drive API query string from DriveQuery */
   private buildQuery(query: DriveQuery): string {
     const parts: string[] = ['trashed = false'];

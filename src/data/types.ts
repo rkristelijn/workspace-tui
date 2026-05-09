@@ -184,9 +184,10 @@ export type TaskProvider = {
   getTasks(query: TaskQuery): Promise<PaginatedResult<Task>>;
 };
 
-/** Drive provider interface for fetching files */
+/** Drive provider interface for fetching and downloading files */
 export type DriveProvider = {
   getFiles(query: DriveQuery): Promise<PaginatedResult<DriveFile>>;
+  downloadFile(fileId: string): Promise<Buffer | null>;
 };
 
 /** Unified provider combining calendar, email, task, and drive capabilities */

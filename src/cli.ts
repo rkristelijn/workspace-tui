@@ -3,16 +3,19 @@
  * Delegates parsing to cli-parser.ts and formatting to formatters.ts.
  */
 
+import 'dotenv/config';
+import { writeFileSync } from 'node:fs';
 import {
   type CliOptions,
   type CliResult,
   type Cmd,
+  type DataCmd,
   parseArgs,
   parseOptions,
   SCHEMA,
   USAGE,
 } from './cli-parser.js';
-import { loadConfig } from './config.js';
+import { clearVault, loadConfig, saveConfig } from './config.js';
 import type { CalendarQuery, DriveQuery, EmailQuery, TaskQuery } from './data/types.js';
 import {
   formatCalendar,
@@ -37,6 +40,35 @@ async function main() {
     process.exit(0);
   }
 
+  if (cmd === 'logout') {
+    console.log(clearVault() ? 'Logged out.' : 'Not logged in.');
+    process.exit(0);
+  }
+
+  if (cmd === 'download') {
+    const fileId = args.find((a) => a.startsWith('--id='))?.split('=')[1];
+    const out = args.find((a) => a.startsWith('--out='))?.split('=')[1];
+    if (!fileId) {
+      console.error('--id=FILE_ID required');
+      process.exit(1);
+    }
+    const config = loadConfig();
+    const credentials = await getCredentials(config);
+    const provider = new GoogleProvider(credentials);
+    const content = await provider.drive.downloadFile(fileId);
+    if (!content) {
+      console.error('Download returned empty');
+      process.exit(1);
+    }
+    if (out) {
+      writeFileSync(out, content);
+      console.log(`Saved to ${out}`);
+    } else {
+      process.stdout.write(content);
+    }
+    process.exit(0);
+  }
+
   if (!cmd) {
     console.error('Command required');
     console.log(USAGE.trim());
@@ -48,37 +80,40 @@ async function main() {
   const credentials = await getCredentials(config);
 
   const provider = new GoogleProvider(credentials);
-  const result = await getData(provider, cmd, options);
+  const result = await getData(provider, cmd as DataCmd, options);
 
   if (mode === 'ai') {
-    outputAi(cmd, result);
+    outputAi(cmd as DataCmd, result);
   } else {
-    outputHuman(cmd, result);
+    outputHuman(cmd as DataCmd, result);
   }
 }
 
-/** Get Google credentials from config or environment */
-async function getCredentials(config: ReturnType<typeof loadConfig>) {
-  let credentials = config.providers.google;
-
-  if (!credentials) {
-    const clientId = process.env.GOOGLE_CLIENT_ID;
-    const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
-    if (!clientId || !clientSecret) {
-      console.error('Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in .env');
-      process.exit(1);
-    }
-    credentials = await authenticate(clientId, clientSecret);
-    config.providers.google = credentials;
+/** Get Google credentials: client ID/secret from .env, refresh token from vault */
+async function getCredentials(vault: ReturnType<typeof loadConfig>) {
+  const clientId = process.env.GOOGLE_CLIENT_ID;
+  const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+  if (!clientId || !clientSecret) {
+    console.error('Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in .env');
+    process.exit(1);
   }
 
+  const refreshToken = vault.providers.google?.refreshToken;
+  if (refreshToken) {
+    return { clientId, clientSecret, refreshToken };
+  }
+
+  // No token yet — run OAuth flow
+  const credentials = await authenticate(clientId, clientSecret);
+  vault.providers.google = credentials;
+  saveConfig(vault);
   return credentials;
 }
 
 /** Fetch data from provider based on command and options */
 async function getData(
   provider: GoogleProvider,
-  cmd: Cmd,
+  cmd: DataCmd,
   options: CliOptions
 ): Promise<CliResult> {
   switch (cmd) {
@@ -110,7 +145,7 @@ async function getData(
 }
 
 /** Output result as AI-friendly JSON with schema metadata */
-function outputAi(cmd: Cmd, result: CliResult) {
+function outputAi(cmd: DataCmd, result: CliResult) {
   const schema = SCHEMA[cmd];
   console.log(
     JSON.stringify(
@@ -132,13 +167,13 @@ function outputAi(cmd: Cmd, result: CliResult) {
 }
 
 /** Output result as human-readable formatted text */
-function outputHuman(cmd: Cmd, result: CliResult) {
+function outputHuman(cmd: DataCmd, result: CliResult) {
   const data = result.data;
   if (!Array.isArray(data) || data.length === 0) {
     console.log('No results');
     return;
   }
-  const formatters: Record<Cmd, (d: unknown[]) => void> = {
+  const formatters: Record<DataCmd, (d: unknown[]) => void> = {
     calendars: formatCalendars,
     calendar: formatCalendar,
     emails: formatEmails,
