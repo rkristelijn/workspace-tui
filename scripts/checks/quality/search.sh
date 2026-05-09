@@ -6,7 +6,7 @@
 check_search() {
   source scripts/lib/skip.sh
   should_skip "search" && return 0
-  
+
   local found=0
   while IFS= read -r file; do
     [[ "$file" == *"lib/search.sh" ]] && continue

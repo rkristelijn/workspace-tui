@@ -6,7 +6,7 @@
 check_comments() {
   source scripts/lib/skip.sh
   should_skip "comments" && return 0
-  
+
   command -v cloc > /dev/null 2>&1 || return 0
   local totals; totals=$(cloc src/ scripts/ --not-match-f='(\.test|\.spec)\.ts$' --csv --quiet 2>/dev/null | grep SUM || true)
   [[ -z "$totals" ]] && return 0

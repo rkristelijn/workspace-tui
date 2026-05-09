@@ -6,7 +6,7 @@
 check_language() {
   source scripts/lib/skip.sh
   should_skip "language" && return 0
-  
+
   local found=0
   if [[ -f ".config/dutch-words.txt" ]]; then
     while IFS= read -r word; do

@@ -6,7 +6,7 @@
 check_async() {
   source scripts/lib/skip.sh
   should_skip "async" && return 0
-  
+
   local found=0
   while IFS= read -r file; do
     if grep -qn "\.then(" "$file" 2>/dev/null; then
