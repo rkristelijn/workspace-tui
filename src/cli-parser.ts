@@ -2,7 +2,17 @@
  * CLI argument parsing and schema definitions.
  */
 
-export type Cmd = 'calendars' | 'calendar' | 'emails' | 'tasks' | 'lists' | 'drive';
+export type Cmd =
+  | 'calendars'
+  | 'calendar'
+  | 'emails'
+  | 'tasks'
+  | 'lists'
+  | 'drive'
+  | 'download'
+  | 'logout';
+/** Commands that return data (used for output formatting) */
+export type DataCmd = Exclude<Cmd, 'download' | 'logout'>;
 export type Mode = 'ai' | 'human';
 
 export interface CliOptions {
@@ -42,6 +52,8 @@ Commands:
   tasks       List tasks
   lists       List task lists
   drive       List drive files
+  download    Download a drive file (--id=FILE_ID --out=path)
+  logout      Remove stored credentials
 
 Options:
   --mode ai|human       Output format (default: ai)
@@ -104,7 +116,11 @@ export const SCHEMA = {
 export function parseArgs(args: string[]): Cmd | '--help' | undefined {
   const cmd = args[0];
   if (cmd === '--help') return '--help';
-  if (['calendars', 'calendar', 'emails', 'tasks', 'lists', 'drive'].includes(cmd))
+  if (
+    ['calendars', 'calendar', 'emails', 'tasks', 'lists', 'drive', 'download', 'logout'].includes(
+      cmd
+    )
+  )
     return cmd as Cmd;
   return undefined;
 }

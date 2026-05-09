@@ -1,56 +1,57 @@
 /**
- * Configuration management for workspace-tui
- * Stores OAuth credentials in ~/.workspace-tui/config.json
+ * Configuration and vault management for workspace-tui.
+ * Settings in .config/settings.json (committed).
+ * Secrets in .config/vault.json (gitignored).
  */
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { dirname } from 'node:path';
+import { existsSync, mkdirSync, readFileSync, unlinkSync, writeFileSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
 
-/**
- * Application configuration structure
- * Contains provider-specific credentials
- */
-export type Config = {
+/** Provider credentials stored in vault */
+export type Vault = {
   providers: {
-    /** Google Workspace OAuth credentials */
     google?: {
-      /** OAuth 2.0 Client ID */
       clientId: string;
-      /** OAuth 2.0 Client Secret */
       clientSecret: string;
-      /** OAuth 2.0 Refresh Token for persistent access */
       refreshToken: string;
     };
   };
 };
 
-/**
- * Load configuration from disk
- * @returns Configuration object, or empty config if file doesn't exist
- */
-export function loadConfig(): Config {
-  // Prefer spread operator here
-  const configPath = process.env.CONFIG_PATH || `${process.env.HOME}/.workspace-tui/config.json`;
+function vaultPath() {
+  return process.env.CONFIG_PATH || resolve(process.cwd(), '.config/vault.json');
+}
 
+/** Load vault (secrets) from .config/vault.json */
+export function loadConfig(): Vault {
   try {
-    const data = readFileSync(configPath, 'utf-8');
+    const data = readFileSync(vaultPath(), 'utf-8');
     return JSON.parse(data);
   } catch {
     return { providers: {} };
   }
 }
 
-/**
- * Save configuration to disk
- * Creates directory if it doesn't exist
- */
-export function saveConfig(config: Config): void {
-  const configPath = process.env.CONFIG_PATH || `${process.env.HOME}/.workspace-tui/config.json`;
+/** Save vault to .config/vault.json */
+export function saveConfig(config: Vault): void {
+  const path = vaultPath();
+  const dir = dirname(path);
+  if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+  writeFileSync(path, JSON.stringify(config, null, 2));
+}
 
-  const dir = dirname(configPath);
-  if (!existsSync(dir)) {
-    mkdirSync(dir, { recursive: true });
+/** Remove vault (logout) */
+export function clearVault(): boolean {
+  const path = vaultPath();
+  if (existsSync(path)) {
+    unlinkSync(path);
+    return true;
   }
+  return false;
+}
 
-  writeFileSync(configPath, JSON.stringify(config, null, 2));
+/** Check if authenticated */
+export function isAuthenticated(): boolean {
+  const vault = loadConfig();
+  return !!vault.providers.google?.refreshToken;
 }
