@@ -6,8 +6,13 @@ check_editorconfig() {
   local found=0
   while IFS= read -r file; do
     if grep -qn '[[:space:]]$' "$file" 2>/dev/null; then
-      print_error "$file: trailing whitespace"
-      found=1
+      # Autofix if FIX=1
+      if [[ "${FIX:-0}" == "1" ]]; then
+        sed -i '' 's/[[:space:]]*$//' "$file"
+      else
+        print_error "$file: trailing whitespace"
+        found=1
+      fi
     fi
   done < <(find src scripts -name '*.ts' -o -name '*.sh' 2>/dev/null)
   return $found
